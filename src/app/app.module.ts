@@ -9,6 +9,11 @@ import { StoresComponent } from './pages/stores/stores.component';
 import { StockComponent } from './pages/stock/stock.component';
 import { SidebarComponent } from './core/components/sidebar/sidebar.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { CreateProductComponent } from './core/components/forms/create-product/create-product.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -18,11 +23,17 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     StoresComponent,
     StockComponent,
     SidebarComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CreateProductComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

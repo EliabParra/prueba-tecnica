@@ -1,1 +1,64 @@
 /* You can add global styles to this file, and also import other style files */
+@use './assets/styles/variables' as v;
+@use './assets/styles/mixins' as m;
+@forward './assets/styles';
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  height: 100%;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+body {
+  font-size: 1.8rem;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+a {
+  text-decoration: none;
+}
+img {
+  width: 100%;
+  height: auto;
+}
+
+.app-shell {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-shell__sidebar {
+  flex: 0 0 auto;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.app-shell__main {
+  flex: 1 1 auto;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1rem 1rem 3rem 1rem;
+
+  @include m.tablet {
+    padding: 1rem 5rem 3rem 5rem;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.m-10 {
+  margin: 1rem;
+}
+
+html,
+body {
+  height: 100%;
+}

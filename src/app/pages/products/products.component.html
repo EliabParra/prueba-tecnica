@@ -1,1 +1,48 @@
-<p>products works!</p>
+<main class="products main-content">
+  <h1 class="products__title text-center">Articulos</h1>
+  <header class="table__header">
+    <div class="table__actions">
+      <div class="table__group">
+        <div class="table__search">
+          <label for="search">Buscar</label>
+          <input type="text" id="search" placeholder="Buscar...">
+          <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
+        </div>
+        <div class="table__sort">
+          <label for="sort">Ordenar por</label>
+          <select id="sort">
+            <option value="id">ID</option>
+            <option value="name">Nombre</option>
+            <option value="category">Categoría</option>
+          </select>
+        </div>
+      </div>
+      <button class="table__btn" (click)="openCreateProductModal()">
+        <i class="fa-solid fa-plus table__add-icon" aria-hidden="true"></i>
+        Agregar Artículo
+      </button>
+    </div>
+  </header>
+  <table class="table">
+    <thead class="table__thead">
+      <tr>
+        <th scope="col" class="table__th">ID</th>
+        <th scope="col" class="table__th">Nombre</th>
+        <th scope="col" class="table__th">Categoría</th>
+        <th scope="col" class="table__th table__th--acciones">Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="table__tbody">
+      <tr class="table__tr">
+        <td class="table__td">1</td>
+        <td class="table__td">Producto 1</td>
+        <td class="table__td">Categoría 1</td>
+        <td class="table__td table__td--acciones">
+          <i class="fa-solid fa-pen-to-square table__accion table__accion--editar" aria-hidden="true"></i>
+          <i class="fa-solid fa-trash-can table__accion table__accion--eliminar" aria-hidden="true"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+

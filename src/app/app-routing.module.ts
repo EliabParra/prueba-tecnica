@@ -14,8 +14,8 @@ const routes: Routes = [
   { path: 'stores', component: StoresComponent },
   { path: 'stores/:id', component: StoresComponent },
   { path: 'stock', component: StockComponent },
-  { path: 'home', redirectTo: '/' },
-  { path: '**', redirectTo: '/404' }
+  { path: 'home', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: '404' }
 ];
 
 @NgModule({

@@ -20,5 +20,4 @@ export class SidebarComponent implements OnInit {
   navigateTo(path: string) {
     this.router.navigate([path])
   }
-
 }

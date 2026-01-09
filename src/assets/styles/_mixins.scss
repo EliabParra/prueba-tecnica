@@ -1,0 +1,79 @@
+@use 'variables' as v;
+
+/** Media Queries **/
+@mixin telefono {
+    @media (min-width: v.$phone) {
+        @content;
+    }
+}
+@mixin tablet {
+    @media (min-width: v.$tablet) {
+        @content;
+    }
+}
+@mixin desktop {
+    @media (min-width: v.$desktop) {
+        @content;
+    }
+}
+@mixin xl_desktop {
+    @media (min-width: v.$xl_desktop) {
+        @content;
+    }
+}
+
+@mixin grid($columns, $spacing) {
+    display: grid;
+    gap: $spacing;
+    grid-template-columns: repeat($columns, 1fr);
+}
+
+@mixin container {
+    width: min(95%, 140rem);
+    margin: 0 auto;
+}
+
+@mixin container-md {
+    width: min(95%, 80rem);
+    margin: 0 auto;
+}
+
+@mixin container-sm {
+    width: min(95%, 60rem);
+    margin: 0 auto;
+}
+
+@mixin reset-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@mixin boton($bgColor, $colorTexto) {
+  all: unset;
+  background-color: v.$azul;
+  color: v.$blanco;
+  padding: 1.2rem 1.8rem;
+  border-radius: .6rem;
+  font-weight: v.$bold;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18rem;
+  gap: .8rem;
+  cursor: pointer;
+  transition: background-color .2s ease-in-out;
+  @include shadow;
+
+  @include tablet {
+    width: auto;
+  }
+
+  &:hover {
+    background-color: darken(v.$azul, 8);
+  }
+}
+
+@mixin shadow {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+}
