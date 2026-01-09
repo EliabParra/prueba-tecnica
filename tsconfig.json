@@ -2,7 +2,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -10,11 +9,25 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
+    "types": [],
+    "skipLibCheck": true,
     "target": "es2015",
     "module": "es2020",
     "lib": [
       "es2018",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "out-tsc",
+    "e2e",
+    "src/test.ts",
+    "src/**/*.spec.ts"
+  ]
 }
