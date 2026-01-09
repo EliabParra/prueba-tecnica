@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationService } from '../../core/services/navigation.service';
 
 @Component({
   selector: 'app-stock',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StockComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private navigationService: NavigationService
+  ) { }
 
   ngOnInit(): void {
+    this.navigationService.setTitle('Inventario')
   }
 
 }

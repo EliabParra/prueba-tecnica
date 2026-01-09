@@ -1,1 +1,13 @@
-<p>sidebar works!</p>
+<aside class="sidebar">
+  <header class="sidebar__header">
+    <h1 class="sidebar__title">{{ navigationService.title }}</h1>
+  </header>
+  <nav class="sidebar__nav">
+    <ul>
+      <li class="sidebar__link" (click)="navigateTo('')">Dashboard</li>
+      <li class="sidebar__link" (click)="navigateTo('products')">Articulos</li>
+      <li class="sidebar__link" (click)="navigateTo('stores')">Almacenes</li>
+      <li class="sidebar__link" (click)="navigateTo('stock')">Inventario</li>
+    </ul>
+  </nav>
+</aside>
