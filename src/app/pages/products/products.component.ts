@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { NavigationService } from '../../core/services/navigation.service'
 import { MatDialog } from '@angular/material/dialog'
-import { ProductsService } from '../../core/products.service'
+import { ProductsService } from '../../core/services/products.service'
 import { ProductsFormComponent } from '../../core/components/forms/products-form/products-form.component'
 import { Product } from '../../core/interfaces/Product'
 
@@ -30,7 +30,7 @@ export class ProductsComponent implements OnInit {
 
   //solo para buscar al derecho y al reves
   allProducts: Product[] = []
-  
+
   syncProducts() {
     this.products = this.productsService.getProducts()
   }

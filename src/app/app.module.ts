@@ -19,6 +19,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { StoresFormComponent } from './core/components/forms/stores-form/stores-form.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     StockComponent,
     SidebarComponent,
     NotFoundComponent,
-    ProductsFormComponent
+    ProductsFormComponent,
+    StoresFormComponent
   ],
   imports: [
     BrowserModule,

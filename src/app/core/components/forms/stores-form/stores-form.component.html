@@ -1,0 +1,43 @@
+<form class="form" [formGroup]="storesForm" (ngSubmit)="onSubmit()">
+  <fieldset class="form__fieldset">
+    <legend class="form__legend">Información del Almacen</legend>
+
+    <div class="form__campo">
+      <label for="name" class="form__label">Nombre</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        class="form__input"
+        placeholder="Nombre del Almacén"
+        [formControl]="name"
+      />
+      <p class="form__error" *ngIf="name.invalid && name.touched">
+        El nombre es obligatorio
+      </p>
+    </div>
+
+    <div class="form__campo">
+      <label for="location" class="form__label">Ubicación</label>
+      <input
+        type="text"
+        name="location"
+        id="location"
+        class="form__input"
+        placeholder="Ubicación del Almacén"
+        [formControl]="location"
+      />
+      <p class="form__error" *ngIf="location.invalid && location.touched">
+        La ubicación es obligatoria
+      </p>
+    </div>
+  </fieldset>
+
+  <button
+    class="form__submit form__submit--registrar"
+    [disabled]="!storesForm.valid"
+    type="submit"
+  >
+    Guardar
+  </button>
+</form>

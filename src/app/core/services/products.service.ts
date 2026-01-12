@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Product } from './interfaces/Product';
-import { FireDBService } from './services/firedb.service';
+import { Product } from '../interfaces/Product';
+import { FireDBService } from './firedb.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({

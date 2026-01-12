@@ -1,1 +1,58 @@
-<p>stores works!</p>
+<main class="stores main-content">
+  <h1 class="stores__title text-center">Almacenes</h1>
+  <header class="table__header">
+    <div class="table__actions">
+      <div class="table__group">
+        <div class="table__search">
+          <label for="search">Buscar</label>
+          <input type="text" id="search" placeholder="Buscar..." (input)="search($event)">
+          <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
+        </div>
+        <div class="table__sort">
+          <label for="sort">Ordenar por</label>
+          <select id="sort" (change)="sort($event)">
+            <option value="id">ID</option>
+            <option value="name">Nombre</option>
+            <option value="location">Ubicación</option>
+          </select>
+        </div>
+      </div>
+      <button class="table__btn" (click)="openCreateStoreModal()">
+        <i class="fa-solid fa-plus table__add-icon" aria-hidden="true"></i>
+        Agregar Almacén
+      </button>
+    </div>
+  </header>
+  <table class="table">
+    <thead class="table__thead">
+      <tr>
+        <th scope="col" class="table__th">ID</th>
+        <th scope="col" class="table__th">Nombre</th>
+        <th scope="col" class="table__th">Ubicación</th>
+        <th scope="col" class="table__th table__th--acciones">Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="table__tbody">
+      <tr class="table__tr" *ngFor="let store of stores">
+        <td class="table__td">{{ store.id }}</td>
+        <td class="table__td">{{ store.name }}</td>
+        <td class="table__td">{{ store.location }}</td>
+        <td class="table__td table__td--acciones">
+          <i
+            class="fa-solid fa-pen-to-square table__accion table__accion--editar"
+            aria-hidden="true"
+            (click)="openEditStoreModal(store)"
+          ></i>
+          <i
+            class="fa-solid fa-trash-can table__accion table__accion--eliminar"
+            aria-hidden="true"
+            (click)="deleteStore(store.id)"
+          ></i>
+        </td>
+      </tr>
+      <tr class="table__tr" *ngIf="stores.length < 1">
+        <td colspan="4" class="table__td text-center">No hay almacenes...</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
