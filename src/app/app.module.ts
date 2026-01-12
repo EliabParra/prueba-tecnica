@@ -9,11 +9,16 @@ import { StoresComponent } from './pages/stores/stores.component';
 import { StockComponent } from './pages/stock/stock.component';
 import { SidebarComponent } from './core/components/sidebar/sidebar.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { CreateProductComponent } from './core/components/forms/create-product/create-product.component';
+import { ProductsFormComponent } from './core/components/forms/products-form/products-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -24,7 +29,7 @@ import { CommonModule } from '@angular/common';
     StockComponent,
     SidebarComponent,
     NotFoundComponent,
-    CreateProductComponent
+    ProductsFormComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,11 @@ import { CommonModule } from '@angular/common';
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

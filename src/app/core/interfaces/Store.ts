@@ -1,5 +1,5 @@
 export interface Store {
-  id?: number
+  id?: string
   name: string
   location: string
 }

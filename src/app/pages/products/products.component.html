@@ -5,12 +5,12 @@
       <div class="table__group">
         <div class="table__search">
           <label for="search">Buscar</label>
-          <input type="text" id="search" placeholder="Buscar...">
+          <input type="text" id="search" placeholder="Buscar..." (input)="search($event)">
           <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
         </div>
         <div class="table__sort">
           <label for="sort">Ordenar por</label>
-          <select id="sort">
+          <select id="sort" (change)="sort($event)">
             <option value="id">ID</option>
             <option value="name">Nombre</option>
             <option value="category">Categoría</option>
@@ -33,16 +33,26 @@
       </tr>
     </thead>
     <tbody class="table__tbody">
-      <tr class="table__tr">
-        <td class="table__td">1</td>
-        <td class="table__td">Producto 1</td>
-        <td class="table__td">Categoría 1</td>
+      <tr class="table__tr" *ngFor="let product of products">
+        <td class="table__td">{{ product.id }}</td>
+        <td class="table__td">{{ product.name }}</td>
+        <td class="table__td">{{ product.category }}</td>
         <td class="table__td table__td--acciones">
-          <i class="fa-solid fa-pen-to-square table__accion table__accion--editar" aria-hidden="true"></i>
-          <i class="fa-solid fa-trash-can table__accion table__accion--eliminar" aria-hidden="true"></i>
+          <i
+            class="fa-solid fa-pen-to-square table__accion table__accion--editar"
+            aria-hidden="true"
+            (click)="openEditProductModal(product)"
+          ></i>
+          <i
+            class="fa-solid fa-trash-can table__accion table__accion--eliminar"
+            aria-hidden="true"
+            (click)="deleteProduct(product.id)"
+          ></i>
         </td>
+      </tr>
+      <tr class="table__tr" *ngIf="products.length < 1">
+        <td colspan="4" class="table__td text-center">No hay productos...</td>
       </tr>
     </tbody>
   </table>
 </main>
-

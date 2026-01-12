@@ -1,4 +1,4 @@
-<form class="form" [formGroup]="createProductForm" (ngSubmit)="onSubmit()">
+<form class="form" [formGroup]="productsForm" (ngSubmit)="onSubmit()">
   <fieldset class="form__fieldset">
     <legend class="form__legend">Información del Artículo</legend>
 
@@ -10,7 +10,7 @@
         id="name"
         class="form__input"
         placeholder="Nombre del Artículo"
-        formControlName="name"
+        [formControl]="name"
       />
       <p class="form__error" *ngIf="name.invalid && name.touched">
         El nombre es obligatorio
@@ -25,7 +25,7 @@
         id="category"
         class="form__input"
         placeholder="Categoría del Artículo"
-        formControlName="category"
+        [formControl]="category"
       />
       <p class="form__error" *ngIf="category.invalid && category.touched">
         La categoría es obligatoria
@@ -35,7 +35,7 @@
 
   <button
     class="form__submit form__submit--registrar"
-    [disabled]="!createProductForm.valid"
+    [disabled]="!productsForm.valid"
     type="submit"
   >
     Guardar
