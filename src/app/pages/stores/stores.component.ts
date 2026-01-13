@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { StoresService } from '../../core/services/stores.service';
 import { Store } from '../../core/interfaces/Store';
 import { StoresFormComponent } from '../../core/components/forms/stores-form/stores-form.component';
+import { StockService } from '../../core/services/stock.service';
 
 @Component({
   selector: 'app-stores',
@@ -15,33 +16,28 @@ export class StoresComponent implements OnInit {
   constructor(
     private navigationService: NavigationService,
     public dialog: MatDialog,
-    public storesService: StoresService
+    public storesService: StoresService,
+    private stockService: StockService
   ) { }
 
   ngOnInit(): void {
     this.navigationService.setTitle('Almacenes')
     this.storesService.stores$.subscribe(list => {
       this.stores = list
-      this.allStores = list
     })
   }
 
   stores: Store[] = []
-  //solo para buscar al derecho y al reves
-  allStores: Store[] = []
-
-  syncStores() {
-    this.stores = this.storesService.getStores()
-  }
 
   search(e: Event) {
     const input: HTMLInputElement = e.target as HTMLInputElement
+    const allStores = this.stores
     const q = input.value.trim().toLowerCase()
     if (!q) {
-      this.stores = [...this.allStores]
+      this.stores = [...allStores]
       return
     }
-    this.stores = this.allStores.filter(store => store.name.toLowerCase().includes(q))
+    this.stores = allStores.filter(store => store.name.toLowerCase().includes(q))
   }
 
   sort(e: Event) {
@@ -63,7 +59,6 @@ export class StoresComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async store => {
       if (store) {
         const result = await this.storesService.addStore(store)
-        this.syncStores()
         console.log('Almacén guardado', result)
         console.log('Almacenes: ', this.stores)
       }
@@ -79,18 +74,16 @@ export class StoresComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async store => {
       if (store) {
         const result = await this.storesService.updateStore(store)
-        this.syncStores()
         console.log('Almacén actualizado', result)
         console.log('Almacenes: ', this.stores)
       }
     })
   }
 
-  async deleteStore(id: string) {
-    await this.storesService.deleteStore(id)
-    this.syncStores()
-    console.log('Almacén eliminado', id)
+  async deleteStore(store: Store): Promise<boolean> {
+    if (this.stockService.existsInStocks(store)) return false
+    await this.storesService.deleteStore(store)
+    console.log('Almacén eliminado', store.id)
     console.log('Almacenes: ', this.stores)
   }
-
 }

@@ -14,12 +14,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { StoresFormComponent } from './core/components/forms/stores-form/stores-form.component';
+import { StockFormComponent } from './core/components/forms/stock-form/stock-form.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { StoresFormComponent } from './core/components/forms/stores-form/stores-
     SidebarComponent,
     NotFoundComponent,
     ProductsFormComponent,
-    StoresFormComponent
+    StoresFormComponent,
+    StockFormComponent
   ],
   imports: [
     BrowserModule,

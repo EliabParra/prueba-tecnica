@@ -1,1 +1,60 @@
-<p>stock works!</p>
+<main class="stock main-content">
+  <h1 class="stock__title text-center">Inventario</h1>
+  <header class="table__header">
+    <div class="table__actions">
+      <div class="table__group">
+        <div class="table__search">
+          <label for="search">Buscar</label>
+          <input type="text" id="search" placeholder="Buscar..." (input)="search($event)">
+          <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
+        </div>
+        <div class="table__sort">
+          <label for="sort">Ordenar por</label>
+          <select id="sort" (change)="sort($event)">
+            <option value="id">ID</option>
+            <option value="store">Almacen</option>
+            <option value="product">Articulo</option>
+          </select>
+        </div>
+      </div>
+      <button class="table__btn" (click)="openCreateStockModal()">
+        <i class="fa-solid fa-plus table__add-icon" aria-hidden="true"></i>
+        Registrar Inventario
+      </button>
+    </div>
+  </header>
+  <table class="table">
+    <thead class="table__thead">
+      <tr>
+        <th scope="col" class="table__th">ID</th>
+        <th scope="col" class="table__th">Almacen</th>
+        <th scope="col" class="table__th">Articulo</th>
+        <th scope="col" class="table__th">Cantidad</th>
+        <th scope="col" class="table__th table__th--acciones">Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="table__tbody">
+      <tr class="table__tr" *ngFor="let stock of stocksDisplay">
+        <td class="table__td">{{ stock.id }}</td>
+        <td class="table__td">{{ stock.store }}</td>
+        <td class="table__td">{{ stock.product }}</td>
+        <td class="table__td">{{ stock.quantity }}</td>
+        <td class="table__td table__td--acciones">
+          <i
+            class="fa-solid fa-pen-to-square table__accion table__accion--editar"
+            aria-hidden="true"
+            (click)="openEditStockModal(stock)"
+          ></i>
+          <i
+            class="fa-solid fa-trash-can table__accion table__accion--eliminar"
+            aria-hidden="true"
+            (click)="deleteStock(stock)"
+          ></i>
+        </td>
+      </tr>
+      <tr class="table__tr" *ngIf="stocksDisplay.length < 1">
+        <td colspan="5" class="table__td text-center">No hay inventario...</td>
+      </tr>
+    </tbody>
+  </table>
+</main>

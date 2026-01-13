@@ -3,7 +3,8 @@ import { NavigationService } from '../../core/services/navigation.service'
 import { MatDialog } from '@angular/material/dialog'
 import { ProductsService } from '../../core/services/products.service'
 import { ProductsFormComponent } from '../../core/components/forms/products-form/products-form.component'
-import { Product } from '../../core/interfaces/Product'
+import { Product } from '../../core/interfaces/Product';
+import { StockService } from '../../core/services/stock.service';
 
 @Component({
   selector: 'app-products',
@@ -15,34 +16,28 @@ export class ProductsComponent implements OnInit {
   constructor(
     private navigationService: NavigationService,
     public dialog: MatDialog,
-    public productsService: ProductsService
+    public productsService: ProductsService,
+    private stockService: StockService
   ) { }
 
   ngOnInit(): void {
     this.navigationService.setTitle('Articulos')
     this.productsService.products$.subscribe(list => {
       this.products = list
-      this.allProducts = list
     })
   }
 
   products: Product[] = []
 
-  //solo para buscar al derecho y al reves
-  allProducts: Product[] = []
-
-  syncProducts() {
-    this.products = this.productsService.getProducts()
-  }
-
   search(e: Event) {
     const input: HTMLInputElement = e.target as HTMLInputElement
+    const allProducts = this.products
     const q = input.value.trim().toLowerCase()
     if (!q) {
-      this.products = [...this.allProducts]
+      this.products = [...allProducts]
       return
     }
-    this.products = this.allProducts.filter(product => product.name.toLowerCase().includes(q))
+    this.products = allProducts.filter(product => product.name.toLowerCase().includes(q))
   }
 
   sort(e: Event) {
@@ -64,7 +59,6 @@ export class ProductsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async product => {
       if (product) {
         const result = await this.productsService.addProduct(product)
-        this.syncProducts()
         console.log('Producto guardado', result)
         console.log('Productos: ', this.products)
       }
@@ -80,17 +74,16 @@ export class ProductsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async product => {
       if (product) {
         const result = await this.productsService.updateProduct(product)
-        this.syncProducts()
         console.log('Producto actualizado', result)
         console.log('Productos: ', this.products)
       }
     })
   }
 
-  async deleteProduct(id: string) {
-    await this.productsService.deleteProduct(id)
-    this.syncProducts()
-    console.log('Producto eliminado', id)
+  async deleteProduct(product: Product): Promise<boolean> {
+    if (this.stockService.existsInStocks(product)) return false
+    await this.productsService.deleteProduct(product)
+    console.log('Producto eliminado', product.id)
     console.log('Productos: ', this.products)
   }
 }

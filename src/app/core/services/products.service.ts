@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ProductsService {
 
   constructor (
-    private db: FireDBService,
+    private db: FireDBService
   ) {
     this.syncDB().then()
   }
@@ -56,10 +56,8 @@ export class ProductsService {
     return productResult
   }
 
-  async deleteProduct(id: string): Promise<string> {
-    const deletedId: string = await this.db.delete(
-      'products', id
-    )
+  async deleteProduct(product: Product): Promise<string> {
+    const deletedId: string = await this.db.delete('products', product.id)
     await this.syncDB()
     return deletedId
   }

@@ -32,9 +32,7 @@ export class StoresService {
   }
 
   async addStore(store: Store): Promise<Store> {
-    const storeResult: Store = await this.db.create(
-      'stores', store
-    )
+    const storeResult: Store = await this.db.create('stores', store)
     await this.syncDB()
     return storeResult
   }
@@ -49,17 +47,13 @@ export class StoresService {
   }
 
   async updateStore(store: Store): Promise<Store> {
-    const storeResult: Store = await this.db.update(
-      'stores', store.id, store
-    )
+    const storeResult: Store = await this.db.update('stores', store.id, store)
     await this.syncDB()
     return storeResult
   }
 
-  async deleteStore(id: string): Promise<string> {
-    const deletedId: string = await this.db.delete(
-      'stores', id
-    )
+  async deleteStore(store: Store): Promise<string> {
+    const deletedId: string = await this.db.delete('stores', store.id)
     await this.syncDB()
     return deletedId
   }
