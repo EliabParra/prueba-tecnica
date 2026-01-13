@@ -58,6 +58,7 @@ export class StoresComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(async store => {
       if (store) {
+        if (this.stockService.existsStore(store)) return
         const result = await this.storesService.addStore(store)
         console.log('Almacén guardado', result)
         console.log('Almacenes: ', this.stores)

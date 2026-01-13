@@ -58,6 +58,7 @@ export class ProductsComponent implements OnInit {
     })
     dialogRef.afterClosed().subscribe(async product => {
       if (product) {
+        if (this.stockService.existsProduct(product)) return
         const result = await this.productsService.addProduct(product)
         console.log('Producto guardado', result)
         console.log('Productos: ', this.products)

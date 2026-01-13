@@ -64,6 +64,7 @@ export class StockService {
   async addStock(stockDisplay: StockDisplay): Promise<Stock | false> {
     const stock: Stock = this.buildStockFromStockDisplay(stockDisplay)
     if (!this.validateCreateStock(stock)) return false
+    console.log('stockDisplay de addStock', stockDisplay);
     if (this.existsStock(stock)) return this.updateStock(stockDisplay)
     const stockResult: Stock = await this.db.create('stocks', stock)
     await this.syncDB()
@@ -113,14 +114,19 @@ export class StockService {
     let valid = true
     if (!stock.productId) valid = false
     if (!stock.storeId) valid = false
-    if (!stock.quantity) valid = false
+    if (!stock.quantity) stock.quantity = 0
     if (stock.quantity < 0) valid = false
     return valid
   }
 
   validateUpdateStock(stock: Stock): boolean {
     let valid = true
-    if (!stock.id) valid = false
+    if (this.existsStock(stock)) {
+      stock.id = this.stocks.find(
+        s => s.productId === stock.productId && s.storeId === stock.storeId
+      ).id
+      if (!stock.id) valid = false
+    }
     if (!stock.productId) valid = false
     if (!stock.storeId) valid = false
     if (!stock.quantity) valid = false
@@ -129,10 +135,18 @@ export class StockService {
   }
 
   existsStock(stock: Stock): boolean {
-    return this.stocks.some(s => s.id === stock.id)
+    return this.stocks.some(s => s.productId === stock.productId && s.storeId === stock.storeId)
   }
 
   existsInStocks(item: Store | Product): boolean {
     return this.stocks.some(s => s.productId === item.id || s.storeId === item.id)
+  }
+
+  existsStore(store: Store): boolean {
+    return this.stores.some(s => s.name === store.name)
+  }
+
+  existsProduct(product: Product): boolean {
+    return this.products.some(p => p.name === product.name)
   }
 }

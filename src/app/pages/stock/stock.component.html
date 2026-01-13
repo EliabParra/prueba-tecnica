@@ -2,21 +2,27 @@
   <h1 class="stock__title text-center">Inventario</h1>
   <header class="table__header">
     <div class="table__actions">
-      <div class="table__group">
-        <div class="table__search">
-          <label for="search">Buscar</label>
-          <input type="text" id="search" placeholder="Buscar..." (input)="search($event)">
+      <form class="table__group">
+        <mat-form-field appearance="fill">
+          <mat-label for="search">Buscar</mat-label>
+          <input
+            matInput
+            type="text"
+            id="search"
+            placeholder="Buscar..."
+            [formControl]="search"
+          >
           <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
-        </div>
+        </mat-form-field>
         <div class="table__sort">
           <label for="sort">Ordenar por</label>
-          <select id="sort" (change)="sort($event)">
+          <select id="sort" >
             <option value="id">ID</option>
             <option value="store">Almacen</option>
             <option value="product">Articulo</option>
           </select>
         </div>
-      </div>
+      </form>
       <button class="table__btn" (click)="openCreateStockModal()">
         <i class="fa-solid fa-plus table__add-icon" aria-hidden="true"></i>
         Registrar Inventario
@@ -34,21 +40,21 @@
       </tr>
     </thead>
     <tbody class="table__tbody">
-      <tr class="table__tr" *ngFor="let stock of stocksDisplay">
-        <td class="table__td">{{ stock.id }}</td>
-        <td class="table__td">{{ stock.store }}</td>
-        <td class="table__td">{{ stock.product }}</td>
-        <td class="table__td">{{ stock.quantity }}</td>
+      <tr class="table__tr" *ngFor="let stockDisplay of stocksDisplay">
+        <td class="table__td">{{ stockDisplay.id }}</td>
+        <td class="table__td">{{ stockDisplay.store.name }}</td>
+        <td class="table__td">{{ stockDisplay.product.name }}</td>
+        <td class="table__td">{{ stockDisplay.quantity }}</td>
         <td class="table__td table__td--acciones">
           <i
             class="fa-solid fa-pen-to-square table__accion table__accion--editar"
             aria-hidden="true"
-            (click)="openEditStockModal(stock)"
+            (click)="openEditStockModal(stockDisplay)"
           ></i>
           <i
             class="fa-solid fa-trash-can table__accion table__accion--eliminar"
             aria-hidden="true"
-            (click)="deleteStock(stock)"
+            (click)="deleteStock(stockDisplay)"
           ></i>
         </td>
       </tr>

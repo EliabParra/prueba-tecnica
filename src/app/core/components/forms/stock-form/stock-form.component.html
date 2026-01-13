@@ -1,1 +1,75 @@
-<p>stock-form works!</p>
+<form class="form" [formGroup]="stocksForm" (ngSubmit)="onSubmit()">
+  <fieldset class="form__fieldset">
+    <legend class="form__legend">Registro de Inventario</legend>
+
+    <mat-form-field class="form__campo" *ngIf="!data.edit">
+      <mat-label for="product" class="form__label">Articulo</mat-label>
+      <input
+        type="text"
+        class="form__input"
+        placeholder="Seleccione un articulo"
+        name="product"
+        id="product"
+        aria-label="Product"
+        matInput
+        [formControl]="product"
+        [matAutocomplete]="productInput"
+      >
+      <mat-autocomplete #productInput="matAutocomplete">
+        <mat-option *ngFor="let product of filteredProductsArray" [value]="product">
+          {{ product }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <p class="form__error" *ngIf="product.invalid && product.touched">
+      El articulo es obligatorio
+    </p>
+
+    <mat-form-field class="form__campo" *ngIf="!data.edit">
+      <mat-label for="store" class="form__label">Almacen</mat-label>
+      <input
+        type="text"
+        class="form__input"
+        placeholder="Seleccione un articulo"
+        name="store"
+        id="store"
+        aria-label="Store"
+        matInput
+        [formControl]="store"
+        [matAutocomplete]="storeInput"
+      >
+      <mat-autocomplete #storeInput="matAutocomplete">
+        <mat-option *ngFor="let store of filteredStoresArray" [value]="store">
+          {{ store }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <p class="form__error" *ngIf="store.invalid && store.touched">
+      El almacen es obligatorio
+    </p>
+
+    <mat-form-field class="form__campo">
+      <mat-label for="quantity" class="form__label">Cantidad</mat-label>
+      <input
+        type="number"
+        name="quantity"
+        id="quantity"
+        class="form__input"
+        placeholder="Cantidad"
+        matInput
+        [formControl]="quantity"
+      />
+    </mat-form-field>
+    <p class="form__error" *ngIf="quantity.invalid && quantity.touched">
+      La cantidad es obligatoria y no puede ser negativa
+    </p>
+  </fieldset>
+
+  <button
+    class="form__submit form__submit--registrar"
+    [disabled]="!stocksForm.valid"
+    type="submit"
+  >
+    Guardar
+  </button>
+</form>

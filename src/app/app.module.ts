@@ -20,6 +20,10 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { StoresFormComponent } from './core/components/forms/stores-form/stores-form.component';
 import { StockFormComponent } from './core/components/forms/stock-form/stock-form.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AlertComponent } from './core/components/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { StockFormComponent } from './core/components/forms/stock-form/stock-for
     NotFoundComponent,
     ProductsFormComponent,
     StoresFormComponent,
-    StockFormComponent
+    StockFormComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,10 @@ import { StockFormComponent } from './core/components/forms/stock-form/stock-for
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     HttpClientModule,
-    ReactiveFormsModule
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSuffix
   ],
   providers: [],
   bootstrap: [AppComponent]
