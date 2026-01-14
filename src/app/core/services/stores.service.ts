@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '../interfaces/Store';
 import { FireDBService } from './firedb.service';
 import { BehaviorSubject } from 'rxjs';
+import { AlertsService } from './alerts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 export class StoresService {
 
   constructor (
-    private db: FireDBService
+    private db: FireDBService,
+    private alertsService: AlertsService
   ) {
     this.syncDB().then()
   }
@@ -33,8 +35,11 @@ export class StoresService {
 
   async addStore(store: Store): Promise<Store> {
     const storeResult: Store = await this.db.create('stores', store)
-    await this.syncDB()
-    return storeResult
+    if (storeResult) {
+      this.alertsService.showAlert({ type: 'success', title: 'Almacén agregado', message: 'Se agregó el almacén ' + store.name })
+      await this.syncDB()
+      return storeResult
+    }
   }
 
   getStores(): Store[] {
@@ -48,13 +53,19 @@ export class StoresService {
 
   async updateStore(store: Store): Promise<Store> {
     const storeResult: Store = await this.db.update('stores', store.id, store)
-    await this.syncDB()
-    return storeResult
+    if (storeResult) {
+      this.alertsService.showAlert({ type: 'success', title: 'Almacén actualizado', message: 'Se actualizó el almacén ' + store.name })
+      await this.syncDB()
+      return storeResult
+    }
   }
 
   async deleteStore(store: Store): Promise<string> {
     const deletedId: string = await this.db.delete('stores', store.id)
-    await this.syncDB()
-    return deletedId
+    if (deletedId) {
+      this.alertsService.showAlert({ type: 'success', title: 'Almacén eliminado', message: 'Se eliminó el almacén ' + store.name })
+      await this.syncDB()
+      return deletedId
+    }
   }
 }

@@ -22,9 +22,11 @@ export class StockService {
     this.syncDB().then()
     this.productsService.products$.subscribe(list => {
       this.products = list
+      this.rebuildStocksDisplay()
     })
     this.storesService.stores$.subscribe(list => {
       this.stores = list
+      this.rebuildStocksDisplay()
     })
   }
 
@@ -47,16 +49,18 @@ export class StockService {
         if ((!data || !data.id) && item.key) data.id = item.key
         return data as Stock
       })
-
-      this.stocksDisplay = this.stocks.map(stock => {
-        const product: Product = this.products.find(p => p.id === stock.productId)
-        const store: Store = this.stores.find(s => s.id === stock.storeId)
-        return this.buildStockDisplay(stock, product, store)
-      })
-
       this.stocksSubject.next(this.stocks)
-      this.stocksDisplaySubject.next(this.stocksDisplay)
+      this.rebuildStocksDisplay()
     })
+  }
+
+  private rebuildStocksDisplay() {
+    this.stocksDisplay = this.stocks.map(stock => {
+      const product: Product = this.products.find(p => p.id === stock.productId)
+      const store: Store = this.stores.find(s => s.id === stock.storeId)
+      return this.buildStockDisplay(stock, product, store)
+    })
+    this.stocksDisplaySubject.next(this.stocksDisplay)
   }
 
   getStocks(): StockDisplay[] {
@@ -110,6 +114,7 @@ export class StockService {
       })
       return false
     }
+    console.log(stock);
     const stockResult: Stock = await this.db.update('stocks', stock.id, stock)
     if (stockResult) {
       this.alertsService.showAlert({

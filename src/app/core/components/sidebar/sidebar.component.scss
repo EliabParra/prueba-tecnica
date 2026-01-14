@@ -45,6 +45,21 @@
         }
     }
 
+        &__link--active {
+            background-color: v.$primary-color;
+            color: v.$blanco;
+            box-shadow: 0 6px 18px rgba(8,32,68,0.12);
+            transform: translateY(-1px);
+
+            .sidebar__icon { color: v.$blanco; background: transparent; }
+            .sidebar__menu-text { color: v.$blanco; }
+        }
+
+        .sidebar__link:not(.sidebar__link--active):hover {
+            background-color: v.$secondary-color;
+            color: v.$blanco;
+        }
+
     &__icon {
         font-size: 2rem;
     }

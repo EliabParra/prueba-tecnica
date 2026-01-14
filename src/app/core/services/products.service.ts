@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Product } from '../interfaces/Product';
 import { FireDBService } from './firedb.service';
 import { BehaviorSubject } from 'rxjs';
+import { AlertsService } from './alerts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,8 @@ import { BehaviorSubject } from 'rxjs';
 export class ProductsService {
 
   constructor (
-    private db: FireDBService
+    private db: FireDBService,
+    private alertsService: AlertsService
   ) {
     this.syncDB().then()
   }
@@ -32,11 +34,12 @@ export class ProductsService {
   }
 
   async addProduct(product: Product): Promise<Product> {
-    const productResult: Product = await this.db.create(
-      'products', product
-    )
-    await this.syncDB()
-    return productResult
+    const productResult: Product = await this.db.create('products', product)
+    if (productResult) {
+      this.alertsService.showAlert({ type: 'success', title: 'Producto agregado', message: 'Se agregó el producto ' + product.name })
+      await this.syncDB()
+      return productResult
+    }
   }
 
   getProducts(): Product[] {
@@ -49,16 +52,20 @@ export class ProductsService {
   }
 
   async updateProduct(product: Product): Promise<Product> {
-    const productResult: Product = await this.db.update(
-      'products', product.id, product
-    )
-    await this.syncDB()
-    return productResult
+    const productResult: Product = await this.db.update('products', product.id, product)
+    if (productResult) {
+      this.alertsService.showAlert({ type: 'success', title: 'Producto actualizado', message: 'Se actualizó el producto ' + product.name })
+      await this.syncDB()
+      return productResult
+    }
   }
 
   async deleteProduct(product: Product): Promise<string> {
     const deletedId: string = await this.db.delete('products', product.id)
-    await this.syncDB()
-    return deletedId
+    if (deletedId) {
+      this.alertsService.showAlert({ type: 'success', title: 'Producto eliminado', message: 'Se eliminó el producto ' + product.name })
+      await this.syncDB()
+      return deletedId
+    }
   }
 }

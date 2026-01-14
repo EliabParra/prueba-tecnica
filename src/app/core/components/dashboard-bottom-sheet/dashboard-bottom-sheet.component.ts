@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-dashboard-bottom-sheet',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardBottomSheetComponent implements OnInit {
 
-  constructor() { }
+  constructor (
+    private bottomSheetRef: MatBottomSheetRef<DashboardBottomSheetComponent>,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
   }
 
+  navigateTo(path: string): void {
+    this.bottomSheetRef.dismiss()
+    this.router.navigate([path])
+  }
 }

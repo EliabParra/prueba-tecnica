@@ -35,6 +35,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DashboardBottomSheetComponent } from './core/components/dashboard-bottom-sheet/dashboard-bottom-sheet.component';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { DashboardBottomSheetComponent } from './core/components/dashboard-botto
     MatListModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatBottomSheetModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

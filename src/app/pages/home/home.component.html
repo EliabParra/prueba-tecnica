@@ -2,12 +2,15 @@
 	<mat-toolbar color="primary" class="dashboard-toolbar">
 		<span class="toolbar-title">Dashboard</span>
 		<span class="spacer"></span>
-
-			<button mat-flat-button><mat-icon>add</mat-icon> Nuevo</button>
-
+		<button
+      mat-flat-button
+      (click)="openDashboardBottomSheet()"
+    >
+      <mat-icon>add</mat-icon> Nuevo
+    </button>
 	</mat-toolbar>
 
-	<div class="stats-row">
+	<div class="stats-row" *ngIf="stats$ | async as stats">
 		<mat-card class="stat-card" *ngFor="let s of stats">
 			<div class="stat-card-content">
 				<div class="stat-icon"><mat-icon>{{s.icon}}</mat-icon></div>
@@ -27,24 +30,16 @@
 					<mat-card-subtitle>Indicadores generales</mat-card-subtitle>
 				</mat-card-header>
 				<mat-card-content>
-					<div class="summary-row">
-						<mat-card class="kpi-card">
-							<div class="kpi-value">{{ inventorySummary.totalUnits }}</div>
-							<div class="kpi-label">Unidades totales</div>
-						</mat-card>
-						<mat-card class="kpi-card">
-							<div class="kpi-value">{{ inventorySummary.totalStores }}</div>
-							<div class="kpi-label">Tiendas</div>
-						</mat-card>
-						<mat-card class="kpi-card">
-							<div class="kpi-value">{{ inventorySummary.outOfStockCount }}</div>
-							<div class="kpi-label">Productos sin stock</div>
+					<div class="summary-row" *ngIf="inventorySummary$ | async as inventorySummary">
+						<mat-card class="kpi-card" *ngFor="let item of inventorySummary">
+							<div class="kpi-value">{{ item.value }}</div>
+							<div class="kpi-label">{{ item.label }}</div>
 						</mat-card>
 					</div>
 
           <mat-card class="chart">
             <mat-card-header>
-              <mat-card-title>Cantidad por Tienda</mat-card-title>
+              <mat-card-title>Cantidad por Almacen</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <canvas #storesChart></canvas>
@@ -60,18 +55,22 @@
 					<mat-card-title>Actividades recientes</mat-card-title>
 				</mat-card-header>
 				<mat-card-content>
-					<mat-list>
-						<mat-list-item *ngFor="let a of recentActivities; let last = last">
-							<div mat-line>{{a.text}}</div>
-              <mat-divider *ngIf="!last"></mat-divider>
-						</mat-list-item>
+					<mat-list *ngIf="alertsService.recentActivities$ | async as recentActivities">
+							<mat-list-item *ngFor="let a of recentActivities.reverse().slice(0, 3); let last = last">
+								<div mat-line>{{a.title}}</div>
+								<div mat-line class="secondary">{{a.message}}</div>
+								<mat-divider *ngIf="!last"></mat-divider>
+							</mat-list-item>
+            <mat-list-item *ngIf="!recentActivities.length">
+              <div mat-line>No hay actividades recientes</div>
+            </mat-list-item>
 					</mat-list>
 					<mat-divider></mat-divider>
-					<h3 class="top-title">Top productos</h3>
-					<div class="top-products">
-						<div class="top-item" *ngFor="let p of topProducts">
-							<span class="name">{{p.name}}</span>
-							<span class="qty">{{p.qty}}</span>
+					<h3 class="top-title">Top articulos</h3>
+					<div class="top-products" *ngIf="topProducts$ | async as topProducts">
+						<div class="top-item" *ngFor="let p of topProducts; let last = last; let i = index">
+							<span class="name">{{i + 1}}. {{p.name}}</span>
+							<span class="qty">{{p.qty}} <mat-divider *ngIf="!last"></mat-divider></span>
 						</div>
 					</div>
 				</mat-card-content>

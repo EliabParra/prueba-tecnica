@@ -8,6 +8,7 @@ import { StockService } from '../../core/services/stock.service';
 import { FormBuilder, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
+import { AlertsService } from '../../core/services/alerts.service';
 
 @Component({
   selector: 'app-stores',
@@ -21,7 +22,8 @@ export class StoresComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public storesService: StoresService,
     private stockService: StockService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private alertsService: AlertsService
   ) { }
 
   ngOnInit(): void {
@@ -86,8 +88,11 @@ export class StoresComponent implements OnInit, OnDestroy {
     })
   }
 
-  async deleteStore(store: Store): Promise<boolean> {
-    if (this.stockService.existsInStocks(store)) return false
+  async deleteStore(store: Store): Promise<void> {
+    if (this.stockService.existsInStocks(store)) {
+      this.alertsService.showAlert({ type: 'error', title: 'Error', message: 'El almacén no puede eliminarse porque tiene articulos en stock' })
+      return
+    }
     await this.storesService.deleteStore(store)
     console.log('Almacén eliminado', store.id)
     console.log('Almacenes: ', this.stores)

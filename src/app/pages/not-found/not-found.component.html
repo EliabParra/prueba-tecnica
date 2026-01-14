@@ -1,7 +1,12 @@
 <main class="not-found main-content">
-  <h1 class="not-found__title text-center">Página no encontrada</h1>
-  <p class="not-found__text text-center">
-    La página que estás buscando no existe o no está disponible.
-  </p>
-  <a class="not-found__link" routerLink="/">Volver al inicio</a>
+  <div class="not-found__card">
+    <div class="not-found__icon" aria-hidden="true">
+      <mat-icon>error_outline</mat-icon>
+    </div>
+    <h1 class="not-found__title">Página no encontrada</h1>
+    <p class="not-found__text">La página que estás buscando no existe o no está disponible.</p>
+    <div class="not-found__actions">
+      <a mat-stroked-button color="primary" class="not-found__link" routerLink="/">Volver al inicio</a>
+    </div>
+  </div>
 </main>

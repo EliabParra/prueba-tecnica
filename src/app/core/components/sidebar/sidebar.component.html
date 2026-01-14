@@ -1,28 +1,22 @@
 <aside class="sidebar">
-    <nav class="sidebar__menu">
-        <div class="sidebar__link" (click)="navigateTo('')">
-            <i class="fa-solid fa-house sidebar__icon" aria-hidden="true"></i>
-            <span class="sidebar__menu-text">
-                Dashboard
-            </span>
-          </div>
-        <div class="sidebar__link" (click)="navigateTo('products')">
-            <i class="fa-solid fa-cart-flatbed sidebar__icon" aria-hidden="true"></i>
-            <span class="sidebar__menu-text">
-                Articulos
-            </span>
-        </div>
-        <div class="sidebar__link" (click)="navigateTo('stores')">
-            <i class="fa-solid fa-box sidebar__icon" aria-hidden="true"></i>
-            <span class="sidebar__menu-text">
-                Almacenes
-            </span>
-        </div>
-        <div class="sidebar__link" (click)="navigateTo('stock')">
-            <i class="fa-solid fa-boxes-stacked sidebar__icon" aria-hidden="true"></i>
-            <span class="sidebar__menu-text">
-                Inventario
-            </span>
-        </div>
-    </nav>
+  <nav class="sidebar__menu">
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('')" (click)="navigateTo('')">
+      <mat-icon>home</mat-icon>
+      <span class="sidebar__menu-text">
+        Dashboard
+      </span>
+    </div>
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('products')" (click)="navigateTo('products')">
+      <mat-icon>shopping_basket</mat-icon>
+      <span class="sidebar__menu-text">Articulos</span>
+    </div>
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('stores')" (click)="navigateTo('stores')">
+      <mat-icon>store</mat-icon>
+      <span class="sidebar__menu-text">Almacenes</span>
+    </div>
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('stock')" (click)="navigateTo('stock')">
+      <mat-icon>inventory</mat-icon>
+      <span class="sidebar__menu-text">Inventario</span>
+    </div>
+  </nav>
 </aside>

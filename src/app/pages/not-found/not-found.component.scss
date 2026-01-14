@@ -1,21 +1,52 @@
 .not-found {
-  max-width: 100rem;
-  margin: 0 auto;
+  min-height: calc(100vh - 64px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 32px;
+
+  &__card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 6px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    max-width: 720px;
+    width: 100%;
+  }
+
+  &__icon {
+    font-size: 56px;
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 12px auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius: 50%;
+    background: rgba(25,118,210,0.08);
+    color: #1976d2;
+  }
 
   &__title {
-    margin: 4rem 0;
-    font-size: 2.8rem;
-    font-weight: 500;
+    margin: 8px 0 6px 0;
+    font-size: 28px;
+    font-weight: 600;
   }
 
   &__text {
-    margin: 2rem 0;
+    margin: 8px 0 18px 0;
+    color: rgba(0,0,0,0.7);
+  }
+
+  &__actions {
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    align-items:center;
   }
 
   &__link {
-    display: inline-block;
-    margin-top: 2rem;
-    font-size: 1.6rem;
-    font-weight: bold;
+    text-decoration:none;
   }
 }

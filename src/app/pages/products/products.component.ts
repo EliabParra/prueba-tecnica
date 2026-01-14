@@ -8,6 +8,7 @@ import { StockService } from '../../core/services/stock.service';
 import { FormBuilder, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
+import { AlertsService } from '../../core/services/alerts.service';
 
 @Component({
   selector: 'app-products',
@@ -21,6 +22,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     public productsService: ProductsService,
     private stockService: StockService,
+    private alertsService: AlertsService,
     private fb: FormBuilder
   ) { }
 
@@ -86,8 +88,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
     })
   }
 
-  async deleteProduct(product: Product): Promise<boolean> {
-    if (this.stockService.existsInStocks(product)) return false
+  async deleteProduct(product: Product): Promise<void> {
+    if (this.stockService.existsInStocks(product)) {
+      this.alertsService.showAlert({ type: 'error', title: 'Error', message: 'El producto no puede eliminarse porque está en stock' })
+      return
+    }
     await this.productsService.deleteProduct(product)
     console.log('Producto eliminado', product.id)
     console.log('Productos: ', this.products)

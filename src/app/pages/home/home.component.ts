@@ -1,10 +1,17 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { NavigationService } from '../../core/services/navigation.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import Chart from 'chart.js';
 import { StockService } from '../../core/services/stock.service';
 import { StoresService } from '../../core/services/stores.service';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { DashboardBottomSheetComponent } from '../../core/components/dashboard-bottom-sheet/dashboard-bottom-sheet.component';
+import { ProductsService } from '../../core/services/products.service';
+import { Product } from '../../core/interfaces/Product';
+import { Store } from '../../core/interfaces/Store';
+import { StockDisplay } from '../../core/interfaces/Stock';
+import Chart from 'chart.js';
+import { AlertsService } from '../../core/services/alerts.service';
 
 @Component({
   selector: 'app-home',
@@ -18,39 +25,70 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private navigationService: NavigationService,
     private stockService: StockService,
-    private storesService: StoresService
+    private storesService: StoresService,
+    private productsService: ProductsService,
+    private bottomSheet: MatBottomSheet,
+    public alertsService: AlertsService
   ) { }
 
-  // UI placeholders — user will add real logic
-  stats = [
-    { label: 'Productos', value: 128, icon: 'inventory' },
-    { label: 'Tiendas', value: 12, icon: 'store' },
-    { label: 'Entradas hoy', value: 24, icon: 'add_shopping_cart' },
-    { label: 'Stock bajo', value: 7, icon: 'report_problem' }
-  ];
-
-  recentActivities = [
-    { text: 'Se agregó 5 unidades de Producto A', time: '1h' },
-    { text: 'Tienda Central actualizada', time: '3h' },
-    { text: 'Inventario importado', time: '1d' }
-  ];
-
-  topProducts = [
-    { name: 'Producto A', qty: 320 },
-    { name: 'Producto B', qty: 210 },
-    { name: 'Producto C', qty: 180 }
-  ];
-
-  // Resumen de inventario (placeholders, sin precios)
-  inventorySummary = {
-    totalSKUs: 128,
-    totalUnits: 4520,
-    totalStores: 12,
-    outOfStockCount: 5
-  };
+  products: Product[] = []
+  stores: Store[] = []
+  stock: StockDisplay[] = []
+  stats$: Observable<any>
+  inventorySummary$: Observable<any>
+  topProducts$: Observable<any>
 
   ngOnInit(): void {
     this.navigationService.setTitle('Dashboard')
+    this.stats$ = combineLatest([
+      this.productsService.products$,
+      this.storesService.stores$,
+      this.stockService.stocksDisplay$
+    ]).pipe(
+      map(([products, stores, stocks]) => {
+        return [
+          { label: 'Productos', value: products.length, icon: 'shopping_basket' },
+          { label: 'Almacenes', value: stores.length, icon: 'store' },
+          { label: 'Stock', value: stocks.length, icon: 'inventory' },
+        ]
+      })
+    )
+
+    this.inventorySummary$ = combineLatest([
+      this.stockService.stocksDisplay$,
+      this.productsService.products$,
+      this.storesService.stores$
+    ]).pipe(
+      map(([stocks, products, stores]) => {
+        // count products that are not associated to any store in stocks
+        const associated = new Set<string>();
+        (stocks || []).forEach(s => { if (s && s.product && s.product.id) associated.add(s.product.id) });
+        const productsWithoutAssociation = (products || []).filter(p => !associated.has(p.id || '')).length;
+
+        return [
+          { label: 'Unidades totales', value: (stocks || []).reduce((s, it) => s + (it.quantity || 0), 0) },
+          { label: 'Almacenes totales', value: (stores || []).length },
+          { label: 'Productos sin stock', value: productsWithoutAssociation }
+        ]
+      })
+    )
+
+    this.topProducts$ = this.stockService.stocksDisplay$.pipe(
+      map(stocks => {
+        const totals = new Map<string, number>();
+        stocks
+          .filter(s => s && s.product && typeof s.quantity === 'number')
+          .forEach(s => {
+            const name = s.product.name;
+            totals.set(name, (totals.get(name) || 0) + (s.quantity || 0));
+          });
+        const items = Array.from(totals.entries()).map(([name, qty]) => ({ name, qty }));
+        items.sort((a, b) => b.qty - a.qty);
+        return items.slice(0, 5).map(item => {
+          return { name: item.name, qty: item.qty };
+        });
+      })
+    )
   }
 
   ngAfterViewInit(): void {
@@ -135,4 +173,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
+  openDashboardBottomSheet() {
+    this.bottomSheet.open(DashboardBottomSheetComponent)
+  }
 }

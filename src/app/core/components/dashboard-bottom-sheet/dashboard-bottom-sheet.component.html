@@ -1,1 +1,26 @@
-<p>dashboard-bottom-sheet works!</p>
+<div class="sheet-root">
+  <div class="sheet-header">
+    <h3>Accesos Rápidos</h3>
+    <p class="subtitle">Navega rápidamente a las secciones principales</p>
+  </div>
+
+  <mat-nav-list class="sheet-list">
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/products')">
+      <mat-icon matListIcon>shopping_basket</mat-icon>
+      <div matLine class="item-title">Artículos</div>
+      <div matLine class="item-sub">Lista de artículos</div>
+    </a>
+
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/stores')">
+      <mat-icon matListIcon>store</mat-icon>
+      <div matLine class="item-title">Almacenes</div>
+      <div matLine class="item-sub">Lista de almacenes</div>
+    </a>
+
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/stock')">
+      <mat-icon matListIcon>inventory</mat-icon>
+      <div matLine class="item-title">Inventario</div>
+      <div matLine class="item-sub">Resumen de inventario</div>
+    </a>
+  </mat-nav-list>
+</div>

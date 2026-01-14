@@ -20,4 +20,10 @@ export class SidebarComponent implements OnInit {
   navigateTo(path: string) {
     this.router.navigate([path])
   }
+
+  isActive(path: string): boolean {
+    const current = this.router.url || '/'
+    if (!path) return current === '/' || current === ''
+    return current === `/${path}` || current.startsWith(`/${path}/`)
+  }
 }

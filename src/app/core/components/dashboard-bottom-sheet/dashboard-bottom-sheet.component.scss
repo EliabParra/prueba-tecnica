@@ -1,0 +1,57 @@
+:host {
+	display: block;
+}
+
+.sheet-root {
+	padding: 12px 8px 20px 8px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.sheet-header h3 {
+	margin: 0 0 4px 0;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.sheet-header .subtitle {
+	margin: 0 0 8px 0;
+	color: rgba(0,0,0,0.6);
+	font-size: 13px;
+}
+
+.sheet-list {
+	padding: 4px 0;
+}
+
+.sheet-item {
+	border-radius: 8px;
+	margin: 6px 0;
+	padding: 8px 10px;
+	transition: background-color 160ms ease, transform 120ms ease;
+}
+
+.sheet-item:hover {
+	background: rgba(25,118,210,0.06);
+	transform: translateY(-2px);
+}
+
+.sheet-item mat-icon {
+	background: rgba(25,118,210,0.08);
+	border-radius: 6px;
+	padding: 6px;
+	margin-right: 12px;
+	color: #1976d2;
+}
+
+.item-title {
+	font-weight: 600;
+}
+
+.item-sub {
+	font-size: 12px;
+	color: rgba(0,0,0,0.6);
+}
+
+.sheet-item:active { transform: translateY(0); }
+
