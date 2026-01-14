@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core'
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
-import { StockDisplay } from '../../../interfaces/Stock'
+import { StockDisplay, Stock } from '../../../interfaces/Stock';
 import { StoresService } from '../../../services/stores.service';
 import { ProductsService } from '../../../services/products.service';
 import { Product } from '../../../interfaces/Product';
 import { Store } from '../../../interfaces/Store';
 import { Observable } from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-stock-form',
@@ -20,8 +20,8 @@ export class StockFormComponent implements OnInit {
     private fb: FormBuilder,
     private productsService: ProductsService,
     private storesService: StoresService,
-    private dialogRef: MatDialogRef<StockFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data
+    public dialogRef: MatDialogRef<StockFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   ngOnInit(): void {

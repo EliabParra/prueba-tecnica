@@ -2,42 +2,21 @@
   <fieldset class="form__fieldset">
     <legend class="form__legend">Información del Artículo</legend>
 
-    <div class="form__campo">
-      <label for="name" class="form__label">Nombre</label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        class="form__input"
-        placeholder="Nombre del Artículo"
-        [formControl]="name"
-      />
-      <p class="form__error" *ngIf="name.invalid && name.touched">
-        El nombre es obligatorio
-      </p>
-    </div>
+    <mat-form-field appearance="fill" class="form__campo">
+      <mat-label>Nombre</mat-label>
+      <input matInput placeholder="Nombre del Artículo" [formControl]="name" />
+      <mat-error *ngIf="name.invalid && name.touched">El nombre es obligatorio</mat-error>
+    </mat-form-field>
 
-    <div class="form__campo">
-      <label for="category" class="form__label">Categoría</label>
-      <input
-        type="text"
-        name="category"
-        id="category"
-        class="form__input"
-        placeholder="Categoría del Artículo"
-        [formControl]="category"
-      />
-      <p class="form__error" *ngIf="category.invalid && category.touched">
-        La categoría es obligatoria
-      </p>
-    </div>
+    <mat-form-field appearance="fill" class="form__campo">
+      <mat-label>Categoría</mat-label>
+      <input matInput placeholder="Categoría del Artículo" [formControl]="category" />
+      <mat-error *ngIf="category.invalid && category.touched">La categoría es obligatoria</mat-error>
+    </mat-form-field>
   </fieldset>
 
-  <button
-    class="form__submit form__submit--registrar"
-    [disabled]="!productsForm.valid"
-    type="submit"
-  >
-    Guardar
-  </button>
+  <div class="form__actions">
+    <button mat-button type="button" (click)="dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="!productsForm.valid" type="submit">Guardar</button>
+  </div>
 </form>

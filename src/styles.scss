@@ -46,7 +46,7 @@ img {
   padding: 1rem 1rem 3rem 1rem;
 
   @include m.tablet {
-    padding: 1rem 5rem 3rem 5rem;
+    padding: 0 5rem 3rem 5rem;
   }
 }
 
@@ -61,4 +61,41 @@ img {
 html,
 body {
   height: 100%;
+}
+
+.alert-dialog .mat-dialog-container {
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-dialog .cdk-overlay-backdrop {
+  background: rgba(0,0,0,0.55) !important;
+}
+
+.alert-dialog .cdk-overlay-pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* backdrop fade */
+@keyframes backdropFadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+.alert-dialog .cdk-overlay-backdrop {
+  animation: backdropFadeIn 180ms ease forwards;
+}
+
+/* slight scale/opacity animation fallback for non-Angular-animation environments */
+@keyframes alertEnter {
+  from { transform: scale(.92); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+.alert-dialog .mat-dialog-container > * {
+  animation: alertEnter 180ms cubic-bezier(.2,.8,.2,1) both;
 }

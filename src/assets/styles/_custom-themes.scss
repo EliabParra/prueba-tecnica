@@ -1,0 +1,39 @@
+// Importa las funciones necesarias de Angular Material
+@import '~@angular/material/theming';
+@include mat-core();
+
+// Define tus paletas personalizadas (usa material.io para elegir)
+$my-primary-palette: (
+  50: #e3f2fd,
+  100: #bbdefb,
+  200: #90caf9,
+  300: #64b5f6,
+  400: #42a5f5,
+  500: #007df4, // Color primario principal
+  600: #1e88e5,
+  700: #1565c0,
+  800: #0d47a1,
+  900: #0b3d91,
+  contrast: (
+    50: black, 100: black, 200: black, 300: black, 400: black,
+    500: white, 600: white, 700: white, 800: white, 900: white
+  )
+);
+
+/* Paletas base (puedes usar $mat-indigo, $mat-blue, $mat-red, etc.) */
+$primary:  mat-palette($my-primary-palette, 500, 100, 700);
+$accent:   mat-palette($mat-pink, A200, A100, A400);
+$warn:     mat-palette($mat-red);
+
+/* Definir tema (light o dark) */
+$my-app-theme: mat-light-theme($primary, $accent, $warn);
+
+/* Opcional: exportar variables CSS para uso en tu CSS */
+:root {
+  --color-primary: #{mat-color($primary)};
+  --color-primary-700: #{mat-color($primary, 700)};
+  --color-accent: #{mat-color($accent, A200)};
+}
+
+/* Aplicar tema a componentes Material */
+@include angular-material-theme($my-app-theme);

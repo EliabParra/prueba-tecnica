@@ -12,15 +12,15 @@ export class StoresFormComponent implements OnInit {
 
   constructor (
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<StoresFormComponent>,
+    public dialogRef: MatDialogRef<StoresFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Store
   ) { }
 
   ngOnInit(): void {}
 
   storesForm = this.fb.group({
-    name: [this.data.name, Validators.required],
-    location: [this.data.location, Validators.required]
+    name: [this.data?.name ?? '', Validators.required],
+    location: [this.data?.location ?? '', Validators.required]
   })
 
   get name(): AbstractControl {

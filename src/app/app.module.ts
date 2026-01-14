@@ -21,9 +21,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { StoresFormComponent } from './core/components/forms/stores-form/stores-form.component';
 import { StockFormComponent } from './core/components/forms/stock-form/stock-form.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AlertComponent } from './core/components/alert/alert.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DashboardBottomSheetComponent } from './core/components/dashboard-bottom-sheet/dashboard-bottom-sheet.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +48,8 @@ import { AlertComponent } from './core/components/alert/alert.component';
     ProductsFormComponent,
     StoresFormComponent,
     StockFormComponent,
-    AlertComponent
+    AlertComponent,
+    DashboardBottomSheetComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +65,16 @@ import { AlertComponent } from './core/components/alert/alert.component';
     MatAutocompleteModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSuffix
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatGridListModule,
+    MatToolbarModule,
+    MatDividerModule,
+    MatListModule,
+    MatProgressSpinnerModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

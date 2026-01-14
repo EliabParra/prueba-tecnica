@@ -1,0 +1,89 @@
+.home-dashboard {
+	padding: 16px;
+}
+
+.dashboard-toolbar {
+	display: flex;
+	align-items: center;
+}
+
+.toolbar-title {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.spacer { flex: 1 1 auto; }
+
+.header-actions button { margin-left: 8px; }
+
+.stats-row {
+	display: flex;
+	gap: 16px;
+	margin: 16px 0;
+	flex-wrap: wrap;
+}
+
+.stat-card {
+	flex: 1 1 calc(25% - 16px);
+	min-width: 180px;
+	display: flex;
+	align-items: center;
+	padding: 12px;
+}
+
+.stat-card-content { display:flex; align-items:center; gap:12px; }
+.stat-icon mat-icon, .stat-icon { font-size:34px; color:#1976d2; }
+.stat-info .stat-value { font-size:20px; font-weight:700; }
+.stat-info .stat-label { font-size:12px; color:rgba(0,0,0,0.6); }
+
+.main-area { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.main-left .large-card, .main-right .side-card { height: 100%; }
+.chart { display:flex; align-items:center; justify-content:center; flex-direction:column; height:320px; color:rgba(0,0,0,0.6); }
+.chart-note { margin-top:12px; }
+.secondary { font-size:12px; color:rgba(0,0,0,0.54); }
+.top-title { margin:12px 0 8px 0; font-size:14px; }
+.top-products .top-item { display:flex; justify-content:space-between; padding:6px 0; }
+
+@media (max-width: 1000px) {
+	.stat-card { flex: 1 1 calc(50% - 16px); }
+	.main-area { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+	.stat-card { flex: 1 1 100%; }
+}
+
+.summary-row {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 14px;
+	flex-wrap: wrap;
+}
+
+.kpi-card {
+	flex: 1 1 calc(25% - 12px);
+	min-width: 140px;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.kpi-value {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.kpi-label {
+	font-size: 12px;
+	color: rgba(0,0,0,0.6);
+}
+
+.large-card { display: flex; flex-direction: column; }
+
+.chart { flex: 1 1 auto; display: flex; flex-direction: column; }
+.chart mat-card-content { flex: 1 1 auto; display: flex; }
+.chart canvas { width: 100% !important; height: 100% !important; max-height: none; display: block; }
+
+.chart .mat-card-header { padding-bottom: 8px; }
+

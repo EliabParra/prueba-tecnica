@@ -1,0 +1,22 @@
+.form__fieldset {
+	border: 0;
+	margin: 0 0 1rem 0;
+	padding: 0;
+}
+
+.form__campo {
+	display: block;
+	width: 100%;
+	margin-bottom: 1rem;
+}
+
+.form__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+}
+
+mat-form-field.form__campo {
+	display: block;
+}

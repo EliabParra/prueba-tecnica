@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Stock, StockDisplay } from '../interfaces/Stock';
 import { Product } from '../interfaces/Product';
 import { Store } from '../interfaces/Store';
+import { AlertsService } from './alerts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class StockService {
   constructor (
     private db: FireDBService,
     private productsService: ProductsService,
-    private storesService: StoresService
+    private storesService: StoresService,
+    private alertsService: AlertsService
   ) {
     this.syncDB().then()
     this.productsService.products$.subscribe(list => {
@@ -62,21 +64,66 @@ export class StockService {
   }
 
   async addStock(stockDisplay: StockDisplay): Promise<Stock | false> {
+    if (
+      !this.existsProduct(stockDisplay.product)
+      || !this.existsStore(stockDisplay.store)
+    ) {
+      this.alertsService.showAlert({
+        type: 'error',
+        title: 'Error al registrar inventario',
+        message: 'El producto o almacen no existe'
+      })
+      return false
+    }
     const stock: Stock = this.buildStockFromStockDisplay(stockDisplay)
-    if (!this.validateCreateStock(stock)) return false
-    console.log('stockDisplay de addStock', stockDisplay);
+    if (!this.validateCreateStock(stock)) {
+      this.alertsService.showAlert({
+        type: 'error',
+        title: 'Error al registrar inventario',
+        message: 'El inventario no es válido'
+      })
+      return false
+    }
     if (this.existsStock(stock)) return this.updateStock(stockDisplay)
     const stockResult: Stock = await this.db.create('stocks', stock)
-    await this.syncDB()
-    return stockResult
+    if (stockResult) {
+      this.alertsService.showAlert({
+        type: 'success',
+        title: 'Inventario registrado',
+        message: `
+          Producto ${stockDisplay.product.name} registrado en el almacen
+          ${stockDisplay.store.name} con exito
+        `
+      })
+      await this.syncDB()
+      return stockResult
+    }
   }
 
   async updateStock(stockDisplay: StockDisplay): Promise<Stock | false> {
     const stock: Stock = this.buildStockFromStockDisplay(stockDisplay)
-    if (!this.validateUpdateStock(stock)) return false
+    if (!this.validateUpdateStock(stock)) {
+      this.alertsService.showAlert({
+        type: 'error',
+        title: 'Error al actualizar inventario',
+        message: 'El inventario no es válido'
+      })
+      return false
+    }
     const stockResult: Stock = await this.db.update('stocks', stock.id, stock)
-    await this.syncDB()
-    return stockResult
+    if (stockResult) {
+      this.alertsService.showAlert({
+        type: 'success',
+        title: 'Inventario actualizado',
+        message: `
+          Producto ${stockDisplay.product.name} en el almacen
+          ${stockDisplay.store.name} actualizado a ${stockDisplay.quantity}
+          unidades con exito
+        `
+      })
+      await this.syncDB()
+      return stockResult
+    }
   }
 
   async deleteStock(stockDisplay: StockDisplay): Promise<Stock | false> {
@@ -129,7 +176,6 @@ export class StockService {
     }
     if (!stock.productId) valid = false
     if (!stock.storeId) valid = false
-    if (!stock.quantity) valid = false
     if (stock.quantity < 0) valid = false
     return valid
   }
@@ -143,10 +189,12 @@ export class StockService {
   }
 
   existsStore(store: Store): boolean {
+    if (!store || !store.name) return false
     return this.stores.some(s => s.name === store.name)
   }
 
   existsProduct(product: Product): boolean {
+    if (!product || !product.name) return false
     return this.products.some(p => p.name === product.name)
   }
 }

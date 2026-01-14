@@ -12,15 +12,15 @@ export class ProductsFormComponent implements OnInit {
 
   constructor (
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<ProductsFormComponent>,
+    public dialogRef: MatDialogRef<ProductsFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Product
   ) { }
 
   ngOnInit(): void {}
 
   productsForm = this.fb.group({
-    name: [this.data.name, Validators.required],
-    category: [this.data.category, Validators.required]
+    name: [this.data?.name ?? '', Validators.required],
+    category: [this.data?.category ?? '', Validators.required]
   })
 
   get name(): AbstractControl {

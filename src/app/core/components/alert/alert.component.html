@@ -1,1 +1,13 @@
-<p>alert works!</p>
+<div class="alert" [ngClass]="alert.type">
+  <div class="alert__icon">
+    <i *ngIf="alert.type === 'success'" class="fa-solid fa-circle-check"></i>
+    <i *ngIf="alert.type === 'error'" class="fa-solid fa-circle-exclamation"></i>
+  </div>
+  <div class="alert__content">
+    <h2 class="alert__title">{{ alert.title || (alert.type === 'success' ? 'Éxito' : 'Error') }}</h2>
+    <p class="alert__message">{{ alert.message }}</p>
+    <div class="alert__actions">
+      <button mat-button color="primary" class="alert__btn" (click)="dialogRef.close(true)">Aceptar</button>
+    </div>
+  </div>
+</div>

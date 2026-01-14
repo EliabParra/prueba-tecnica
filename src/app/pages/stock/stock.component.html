@@ -4,7 +4,10 @@
     <div class="table__actions">
       <form class="table__group">
         <mat-form-field appearance="fill">
-          <mat-label for="search">Buscar</mat-label>
+          <mat-label for="search">
+            Buscar
+            <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
+          </mat-label>
           <input
             matInput
             type="text"
@@ -12,18 +15,17 @@
             placeholder="Buscar..."
             [formControl]="search"
           >
-          <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
         </mat-form-field>
-        <div class="table__sort">
-          <label for="sort">Ordenar por</label>
-          <select id="sort" >
-            <option value="id">ID</option>
-            <option value="store">Almacen</option>
-            <option value="product">Articulo</option>
-          </select>
-        </div>
+        <mat-form-field appearance="fill">
+          <mat-label for="sort">Ordenar por</mat-label>
+          <mat-select id="sort" [formControl]="sort">
+            <mat-option value="id">ID</mat-option>
+            <mat-option value="store">Almacen</mat-option>
+            <mat-option value="product">Articulo</mat-option>
+          </mat-select>
+        </mat-form-field>
       </form>
-      <button class="table__btn" (click)="openCreateStockModal()">
+      <button mat-raised-button color="primary" (click)="openCreateStockModal()">
         <i class="fa-solid fa-plus table__add-icon" aria-hidden="true"></i>
         Registrar Inventario
       </button>
@@ -63,4 +65,14 @@
       </tr>
     </tbody>
   </table>
+  <div class="table__paginator">
+    <mat-paginator
+      [length]="filteredDisplay.length"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPage($event)"
+    >
+    </mat-paginator>
+  </div>
 </main>
