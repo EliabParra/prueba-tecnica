@@ -10,13 +10,29 @@
       <mat-icon>shopping_basket</mat-icon>
       <span class="sidebar__menu-text">Articulos</span>
     </div>
-    <div class="sidebar__link" [class.sidebar__link--active]="isActive('stores')" (click)="navigateTo('stores')">
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('categories')" (click)="navigateTo('categories')">
+      <mat-icon>category</mat-icon>
+      <span class="sidebar__menu-text">Categorías</span>
+    </div>
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('warehouses')" (click)="navigateTo('warehouses')">
       <mat-icon>store</mat-icon>
       <span class="sidebar__menu-text">Almacenes</span>
     </div>
     <div class="sidebar__link" [class.sidebar__link--active]="isActive('stock')" (click)="navigateTo('stock')">
       <mat-icon>inventory</mat-icon>
       <span class="sidebar__menu-text">Inventario</span>
+    </div>
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('movements')" (click)="navigateTo('movements')">
+      <mat-icon>swap_horiz</mat-icon>
+      <span class="sidebar__menu-text">Movimientos</span>
+    </div>
+    <div class="sidebar__link" [class.sidebar__link--active]="isActive('reports')" (click)="navigateTo('reports')">
+      <mat-icon>assessment</mat-icon>
+      <span class="sidebar__menu-text">Reportes</span>
+    </div>
+    <div class="sidebar__link" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span class="sidebar__menu-text">Cerrar sesión</span>
     </div>
   </nav>
 </aside>

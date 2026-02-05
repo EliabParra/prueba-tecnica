@@ -1,5 +1,10 @@
 export interface Product {
-  id?: string
+  id?: number | string
   name: string
-  category: string
+  description?: string | null
+  price?: number
+  unitOfMeasure?: string | null
+  minStock?: number
+  categoryId?: number
+  categoryName?: string | null
 }

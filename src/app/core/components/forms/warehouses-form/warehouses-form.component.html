@@ -1,0 +1,22 @@
+<form class="form" [formGroup]="warehousesForm" (ngSubmit)="onSubmit()">
+  <fieldset class="form__fieldset">
+    <legend class="form__legend">Información del Almacén</legend>
+
+    <mat-form-field appearance="fill" class="form__campo">
+      <mat-label>Nombre</mat-label>
+      <input matInput placeholder="Nombre del Almacén" [formControl]="name" />
+      <mat-error *ngIf="name.invalid && name.touched">El nombre es obligatorio y válido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form__campo">
+      <mat-label>Ubicación</mat-label>
+      <input matInput placeholder="Ubicación del Almacén" [formControl]="location" />
+      <mat-error *ngIf="location.invalid && location.touched">La ubicación es obligatoria y válida</mat-error>
+    </mat-form-field>
+  </fieldset>
+
+  <div class="form__actions">
+    <button mat-button type="button" (click)="dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="!warehousesForm.valid" type="submit">Guardar</button>
+  </div>
+</form>

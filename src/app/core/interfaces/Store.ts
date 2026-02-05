@@ -1,5 +1,1 @@
-export interface Store {
-  id?: string
-  name: string
-  location: string
-}
+export type Store = import('./Warehouse').Warehouse

@@ -17,7 +17,9 @@
     @include m.tablet {
       flex-direction: row;
       justify-content: space-between;
-      align-items: flex-end;
+      align-items: center;
+      flex-wrap: nowrap;
+      gap: 1.5rem;
     }
   }
 
@@ -29,8 +31,24 @@
 
     @include m.tablet {
       flex-direction: row;
-      align-items: flex-end;
-      width: auto;
+      align-items: center;
+      flex: 1 1 0;
+      min-width: 0;
+      width: 100%;
+    }
+  }
+
+  &__add-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  &__search-field {
+    flex: 1 1 auto;
+    width: 100%;
+
+    @include m.tablet {
+      min-width: 0;
     }
   }
 
@@ -114,6 +132,7 @@
       justify-content: flex-end;
       align-items: center;
       gap: 1rem;
+      height: 100%;
     }
   }
 
@@ -140,4 +159,22 @@
       }
     }
   }
+}
+
+.table .mat-header-cell,
+.table .mat-cell {
+  vertical-align: middle;
+}
+
+.table .mat-row,
+.table .mat-header-row {
+  height: auto;
+}
+
+.table .mat-form-field-appearance-standard .mat-form-field-flex {
+  min-height: 3.6rem;
+}
+
+.table .mat-form-field-appearance-standard .mat-form-field-infix {
+  padding: 0.2rem 0 0.4rem 0;
 }

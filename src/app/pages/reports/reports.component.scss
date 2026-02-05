@@ -1,0 +1,47 @@
+.reports {
+  max-width: 110rem;
+  margin: 0 auto;
+
+  &__title {
+    margin: 4rem 0 2rem;
+    font-size: 2.8rem;
+    font-weight: 500;
+  }
+
+  &__filters {
+    margin-bottom: 2rem;
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: minmax(180px, 260px) minmax(180px, 260px) auto;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 768px) {
+    &__form {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    &__actions {
+      justify-content: flex-start;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 0.2rem;
+  }
+
+  .table__paginator {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

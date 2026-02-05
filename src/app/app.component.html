@@ -1,5 +1,5 @@
 <div class="app-shell">
-  <app-sidebar class="app-shell__sidebar"></app-sidebar>
+  <app-sidebar class="app-shell__sidebar" *ngIf="isAuthenticated"></app-sidebar>
 
   <main class="app-shell__main">
     <router-outlet></router-outlet>

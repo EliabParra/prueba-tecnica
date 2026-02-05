@@ -3,7 +3,7 @@
   <header class="table__header">
     <div class="table__actions">
       <form class="table__group">
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="standard" class="table__search-field">
           <mat-label for="search">
             Buscar
             <i class="fa-solid fa-search table__icon" aria-hidden="true"></i>
@@ -13,66 +13,60 @@
             type="text"
             id="search"
             placeholder="Buscar..."
-            [formControl]="search"
+            (keyup)="applyFilter($any($event.target).value)"
           >
         </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label for="sort">Ordenar por</mat-label>
-          <mat-select id="sort" [formControl]="sort">
-            <mat-option value="id">ID</mat-option>
-            <mat-option value="store">Almacen</mat-option>
-            <mat-option value="product">Articulo</mat-option>
-          </mat-select>
-        </mat-form-field>
       </form>
-      <button mat-raised-button color="primary" (click)="openCreateStockModal()">
+      <button mat-raised-button color="primary" class="table__add-button" (click)="openCreateStockModal()">
         <i class="fa-solid fa-plus table__add-icon" aria-hidden="true"></i>
         Registrar Inventario
       </button>
     </div>
   </header>
-  <table class="table">
-    <thead class="table__thead">
-      <tr>
-        <th scope="col" class="table__th">ID</th>
-        <th scope="col" class="table__th">Almacen</th>
-        <th scope="col" class="table__th">Articulo</th>
-        <th scope="col" class="table__th">Cantidad</th>
-        <th scope="col" class="table__th table__th--acciones">Acciones</th>
-      </tr>
-    </thead>
-    <tbody class="table__tbody">
-      <tr class="table__tr" *ngFor="let stockDisplay of stocksDisplay">
-        <td class="table__td">{{ stockDisplay.id }}</td>
-        <td class="table__td">{{ stockDisplay.store.name }}</td>
-        <td class="table__td">{{ stockDisplay.product.name }}</td>
-        <td class="table__td">{{ stockDisplay.quantity }}</td>
-        <td class="table__td table__td--acciones">
-          <i
-            class="fa-solid fa-pen-to-square table__accion table__accion--editar"
-            aria-hidden="true"
-            (click)="openEditStockModal(stockDisplay)"
-          ></i>
-          <i
-            class="fa-solid fa-trash-can table__accion table__accion--eliminar"
-            aria-hidden="true"
-            (click)="deleteStock(stockDisplay)"
-          ></i>
-        </td>
-      </tr>
-      <tr class="table__tr" *ngIf="stocksDisplay.length < 1">
-        <td colspan="5" class="table__td text-center">No hay inventario...</td>
-      </tr>
-    </tbody>
+  <table mat-table [dataSource]="dataSource" class="table" matSort>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>ID</th>
+      <td mat-cell *matCellDef="let stock" class="table__td">{{ stock.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="warehouse">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Almacen</th>
+      <td mat-cell *matCellDef="let stock" class="table__td">{{ stock.warehouse.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Articulo</th>
+      <td mat-cell *matCellDef="let stock" class="table__td">{{ stock.product.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Cantidad</th>
+      <td mat-cell *matCellDef="let stock" class="table__td">{{ stock.quantity }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="table__th table__th--acciones">Acciones</th>
+      <td mat-cell *matCellDef="let stock" class="table__td table__td--acciones">
+        <i
+          class="fa-solid fa-pen-to-square table__accion table__accion--editar"
+          aria-hidden="true"
+          (click)="openEditStockModal(stock)"
+        ></i>
+        <i
+          class="fa-solid fa-trash-can table__accion table__accion--eliminar"
+          aria-hidden="true"
+          (click)="deleteStock(stock)"
+        ></i>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr class="table__tr" *ngIf="!dataSource.data.length">
+      <td colspan="5" class="table__td text-center">No hay inventario...</td>
+    </tr>
   </table>
   <div class="table__paginator">
-    <mat-paginator
-      [length]="filteredDisplay.length"
-      [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      [pageSizeOptions]="pageSizeOptions"
-      (page)="onPage($event)"
-    >
-    </mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
   </div>
 </main>

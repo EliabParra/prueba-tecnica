@@ -26,25 +26,15 @@
 		<section class="main-left">
 			<mat-card class="large-card">
 				<mat-card-header>
-					<mat-card-title>Resumen de Inventario</mat-card-title>
-					<mat-card-subtitle>Indicadores generales</mat-card-subtitle>
+					<mat-card-title>Stock por categoría</mat-card-title>
+					<mat-card-subtitle>Distribución de stock</mat-card-subtitle>
 				</mat-card-header>
 				<mat-card-content>
-					<div class="summary-row" *ngIf="inventorySummary$ | async as inventorySummary">
-						<mat-card class="kpi-card" *ngFor="let item of inventorySummary">
-							<div class="kpi-value">{{ item.value }}</div>
-							<div class="kpi-label">{{ item.label }}</div>
-						</mat-card>
-					</div>
-
-          <mat-card class="chart">
-            <mat-card-header>
-              <mat-card-title>Cantidad por Almacen</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <canvas #storesChart></canvas>
-            </mat-card-content>
-          </mat-card>
+					<mat-card class="chart">
+						<mat-card-content>
+							<canvas #warehousesChart></canvas>
+						</mat-card-content>
+					</mat-card>
 				</mat-card-content>
 			</mat-card>
 		</section>
@@ -52,27 +42,19 @@
 		<aside class="main-right">
 			<mat-card class="side-card">
 				<mat-card-header>
-					<mat-card-title>Actividades recientes</mat-card-title>
+					<mat-card-title>Movimientos recientes de inventario</mat-card-title>
 				</mat-card-header>
 				<mat-card-content>
-					<mat-list *ngIf="alertsService.recentActivities$ | async as recentActivities">
-							<mat-list-item *ngFor="let a of recentActivities.reverse().slice(0, 3); let last = last">
-								<div mat-line>{{a.title}}</div>
-								<div mat-line class="secondary">{{a.message}}</div>
-								<mat-divider *ngIf="!last"></mat-divider>
-							</mat-list-item>
-            <mat-list-item *ngIf="!recentActivities.length">
-              <div mat-line>No hay actividades recientes</div>
-            </mat-list-item>
+					<mat-list>
+						<mat-list-item *ngFor="let item of recentMovements; let last = last">
+							<div mat-line>#{{ item.movementNumber }}</div>
+							<div mat-line class="secondary">{{ formatMovement(item) }}</div>
+							<mat-divider *ngIf="!last"></mat-divider>
+						</mat-list-item>
+						<mat-list-item *ngIf="!recentMovements.length">
+							<div mat-line>No hay movimientos recientes</div>
+						</mat-list-item>
 					</mat-list>
-					<mat-divider></mat-divider>
-					<h3 class="top-title">Top articulos</h3>
-					<div class="top-products" *ngIf="topProducts$ | async as topProducts">
-						<div class="top-item" *ngFor="let p of topProducts; let last = last; let i = index">
-							<span class="name">{{i + 1}}. {{p.name}}</span>
-							<span class="qty">{{p.qty}} <mat-divider *ngIf="!last"></mat-divider></span>
-						</div>
-					</div>
 				</mat-card-content>
 			</mat-card>
 		</aside>

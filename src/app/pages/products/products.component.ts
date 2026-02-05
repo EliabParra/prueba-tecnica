@@ -1,66 +1,78 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core'
 import { NavigationService } from '../../core/services/navigation.service'
 import { MatDialog } from '@angular/material/dialog'
 import { ProductsService } from '../../core/services/products.service'
 import { ProductsFormComponent } from '../../core/components/forms/products-form/products-form.component'
 import { Product } from '../../core/interfaces/Product';
 import { StockService } from '../../core/services/stock.service';
-import { FormBuilder, AbstractControl } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { AlertsService } from '../../core/services/alerts.service';
+import { ConfirmDialogComponent } from '../../core/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit, OnDestroy {
+export class ProductsComponent implements OnInit, AfterViewInit {
 
   constructor(
     private navigationService: NavigationService,
     public dialog: MatDialog,
     public productsService: ProductsService,
     private stockService: StockService,
-    private alertsService: AlertsService,
-    private fb: FormBuilder
+    private alertsService: AlertsService
   ) { }
 
   ngOnInit(): void {
     this.navigationService.setTitle('Articulos')
+    this.productsService.syncDB().then()
     this.productsService.products$.subscribe(list => {
-      this.allProducts = list
-      this.applyFilter()
+      this.dataSource.data = list
+      this.dataSource.filter = ''
     })
-    this.subs.push(this.filterForm.get('search').valueChanges.subscribe(() => this.applyFilter()))
-    this.subs.push(this.filterForm.get('sort').valueChanges.subscribe(() => this.applyFilter()))
+    this.stockService.stocksDisplay$.subscribe(stocks => {
+      this.stockTotals = {};
+      (stocks || []).forEach(s => {
+        const id = Number(s.product?.id)
+        if (!id) return
+        const key = String(id)
+        this.stockTotals[key] = (this.stockTotals[key] || 0) + (s.quantity || 0)
+      })
+      this.dataSource.data = [...this.dataSource.data]
+    })
+    this.dataSource.filterPredicate = (data, filter) => {
+      const q = filter.trim().toLowerCase()
+      if (!q) return true
+      return data.name.toLowerCase().includes(q)
+        || (data.categoryName || '').toLowerCase().includes(q)
+        || this.getStatus(data).toLowerCase().includes(q)
+    }
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      if (property === 'status') return this.getStatus(item).toLowerCase()
+      return (item as any)[property]
+    }
   }
 
-  products: Product[] = []
-  allProducts: Product[] = []
-  filteredProducts: Product[] = []
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator
+    this.dataSource.sort = this.sort
+  }
 
-  // paginator
-  pageIndex = 0
-  pageSize = 10
-  pageSizeOptions = [5, 10, 25]
+  dataSource = new MatTableDataSource<Product>([])
+  displayedColumns: string[] = ['id', 'name', 'categoryName', 'status', 'actions']
 
-  filterForm = this.fb.group({
-    search: [''],
-    sort: ['id']
-  })
+  private stockTotals: Record<string, number> = {}
 
-  get search(): AbstractControl { return this.filterForm.get('search') }
-  get sort(): AbstractControl { return this.filterForm.get('sort') }
-
-  searchInput(e: Event) { this.search.setValue((e.target as HTMLInputElement).value) }
-
-  sortChange(e: Event) { this.sort.setValue((e.target as HTMLSelectElement).value) }
+  @ViewChild(MatPaginator) paginator!: MatPaginator
+  @ViewChild(MatSort) sort!: MatSort
 
   openCreateProductModal() {
     const dialogRef = this.dialog.open(ProductsFormComponent, {
       width: '40rem',
-      data: { name: '', category: '' },
+      data: { name: '', categoryId: 0, price: 0, unitOfMeasure: '', minStock: 0, description: '' },
       autoFocus: false
     })
     dialogRef.afterClosed().subscribe(async product => {
@@ -68,7 +80,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
         if (this.stockService.existsProduct(product)) return
         const result = await this.productsService.addProduct(product)
         console.log('Producto guardado', result)
-        console.log('Productos: ', this.products)
+        console.log('Productos: ', this.dataSource.data)
       }
     })
   }
@@ -83,7 +95,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       if (product) {
         const result = await this.productsService.updateProduct(product)
         console.log('Producto actualizado', result)
-        console.log('Productos: ', this.products)
+        console.log('Productos: ', this.dataSource.data)
       }
     })
   }
@@ -93,49 +105,33 @@ export class ProductsComponent implements OnInit, OnDestroy {
       this.alertsService.showAlert({ type: 'error', title: 'Error', message: 'El producto no puede eliminarse porque está en stock' })
       return
     }
-    await this.productsService.deleteProduct(product)
-    console.log('Producto eliminado', product.id)
-    console.log('Productos: ', this.products)
-    this.applyFilter()
-  }
-
-  private subs: Subscription[] = []
-
-  private applyFilter() {
-    const q = (this.search.value || '').toString().trim().toLowerCase()
-    if (!q) {
-      this.filteredProducts = [...this.allProducts]
-    } else {
-      this.filteredProducts = this.allProducts.filter(p => p.name.toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q))
-    }
-    const sortBy = (this.sort.value || 'id').toString()
-    this.filteredProducts.sort((a, b) => {
-      let av: any = a[sortBy]
-      let bv: any = b[sortBy]
-      if (av == null) av = ''
-      if (bv == null) bv = ''
-      av = typeof av === 'string' ? av.toLowerCase() : av
-      bv = typeof bv === 'string' ? bv.toLowerCase() : bv
-      if (av < bv) return -1
-      if (av > bv) return 1
-      return 0
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '28rem',
+      data: {
+        title: 'Eliminar producto',
+        message: `¿Seguro que deseas eliminar "${product.name}"?`,
+        confirmText: 'Eliminar'
+      },
+      autoFocus: false
     })
-    this.pageIndex = 0
-    this.updatePaged()
+    dialogRef.afterClosed().subscribe(async confirmed => {
+      if (!confirmed) return
+      await this.productsService.deleteProduct(product)
+      console.log('Producto eliminado', product.id)
+      console.log('Productos: ', this.dataSource.data)
+      this.applyFilter(this.dataSource.filter)
+    })
   }
 
-  updatePaged() {
-    const start = this.pageIndex * this.pageSize
-    this.products = this.filteredProducts.slice(start, start + this.pageSize)
+  applyFilter(value: string) {
+    this.dataSource.filter = (value || '').toString().trim().toLowerCase()
+    if (this.paginator) this.paginator.firstPage()
   }
 
-  onPage(e: PageEvent) {
-    this.pageIndex = e.pageIndex
-    this.pageSize = e.pageSize
-    this.updatePaged()
-  }
-
-  ngOnDestroy(): void {
-    this.subs.forEach(s => s.unsubscribe())
+  getStatus(product: Product): string {
+    const min = Number(product.minStock || 0)
+    const total = this.stockTotals[String(product.id)] || 0
+    if (min > 0 && total < min) return 'Low stock'
+    return 'In stock'
   }
 }

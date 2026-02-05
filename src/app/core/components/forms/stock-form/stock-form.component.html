@@ -7,13 +7,14 @@
       <input
         type="text"
         class="form__input"
-        placeholder="Seleccione un articulo"
+        placeholder="Buscar artículo"
         name="product"
         id="product"
         aria-label="Product"
         matInput
         [formControl]="product"
         [matAutocomplete]="productInput"
+        (focus)="loadProducts()"
       >
       <mat-autocomplete #productInput="matAutocomplete">
         <mat-option *ngFor="let product of filteredProductsArray" [value]="product">
@@ -26,25 +27,26 @@
     </p>
 
     <mat-form-field class="form__campo" *ngIf="!data.edit" appearance="fill">
-      <mat-label for="store" class="form__label">Almacen</mat-label>
+      <mat-label for="warehouse" class="form__label">Almacen</mat-label>
       <input
         type="text"
         class="form__input"
-        placeholder="Seleccione un articulo"
-        name="store"
-        id="store"
-        aria-label="Store"
+        placeholder="Buscar almacén"
+        name="warehouse"
+        id="warehouse"
+        aria-label="Warehouse"
         matInput
-        [formControl]="store"
-        [matAutocomplete]="storeInput"
+        [formControl]="warehouse"
+        [matAutocomplete]="warehouseInput"
+        (focus)="loadWarehouses()"
       >
-      <mat-autocomplete #storeInput="matAutocomplete">
-        <mat-option *ngFor="let store of filteredStoresArray" [value]="store">
-          {{ store }}
+      <mat-autocomplete #warehouseInput="matAutocomplete">
+        <mat-option *ngFor="let warehouse of filteredWarehousesArray" [value]="warehouse">
+          {{ warehouse }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <p class="form__error" *ngIf="store.invalid && store.touched">
+    <p class="form__error" *ngIf="warehouse.invalid && warehouse.touched">
       El almacen es obligatorio
     </p>
 
@@ -55,7 +57,7 @@
         name="quantity"
         id="quantity"
         class="form__input"
-        placeholder="Cantidad"
+        placeholder="Ej. 10"
         matInput
         [formControl]="quantity"
       />

@@ -4,14 +4,7 @@
 
 export const environment = {
   production: false,
-  firebase: {
-    apiKey: "AIzaSyAFAmtkMDwShTG3XbUSTTJdHCUF8mQQa-4",
-    authDomain: "eliab-prueba-tecnica.firebaseapp.com",
-    projectId: "eliab-prueba-tecnica",
-    storageBucket: "eliab-prueba-tecnica.firebasestorage.app",
-    messagingSenderId: "732881141782",
-    appId: "1:732881141782:web:fb64fd4bbc0e442317f537"
-  }
+  apiUrl: 'http://localhost:5211'
 };
 
 /*

@@ -11,7 +11,13 @@
       <div matLine class="item-sub">Lista de artículos</div>
     </a>
 
-    <a mat-list-item class="sheet-item" (click)="navigateTo('/stores')">
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/categories')">
+      <mat-icon matListIcon>category</mat-icon>
+      <div matLine class="item-title">Categorías</div>
+      <div matLine class="item-sub">Lista de categorías</div>
+    </a>
+
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/warehouses')">
       <mat-icon matListIcon>store</mat-icon>
       <div matLine class="item-title">Almacenes</div>
       <div matLine class="item-sub">Lista de almacenes</div>
@@ -21,6 +27,18 @@
       <mat-icon matListIcon>inventory</mat-icon>
       <div matLine class="item-title">Inventario</div>
       <div matLine class="item-sub">Resumen de inventario</div>
+    </a>
+
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/movements')">
+      <mat-icon matListIcon>swap_horiz</mat-icon>
+      <div matLine class="item-title">Movimientos</div>
+      <div matLine class="item-sub">Entradas y transferencias</div>
+    </a>
+
+    <a mat-list-item class="sheet-item" (click)="navigateTo('/reports')">
+      <mat-icon matListIcon>assessment</mat-icon>
+      <div matLine class="item-title">Reportes</div>
+      <div matLine class="item-sub">Reporte de inventario</div>
     </a>
   </mat-nav-list>
 </div>

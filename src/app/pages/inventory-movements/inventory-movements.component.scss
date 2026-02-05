@@ -1,0 +1,25 @@
+.inventory-movements {
+  max-width: 110rem;
+  margin: 0 auto;
+
+  &__title {
+    margin: 4rem 0 2rem;
+    font-size: 2.8rem;
+    font-weight: 500;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  &__form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  &__card {
+    padding: 0.5rem 0;
+  }
+}

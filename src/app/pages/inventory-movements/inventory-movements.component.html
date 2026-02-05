@@ -1,0 +1,100 @@
+<main class="inventory-movements main-content">
+  <h1 class="inventory-movements__title text-center">Movimientos y Transferencias</h1>
+
+  <div class="inventory-movements__grid">
+    <mat-card class="inventory-movements__card">
+      <mat-card-title>Movimiento</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="movementForm" class="inventory-movements__form" (ngSubmit)="submitMovement()">
+          <mat-form-field appearance="fill">
+            <mat-label>Producto</mat-label>
+            <mat-select formControlName="productId" (openedChange)="loadProducts($event)">
+              <mat-option [value]="0">Seleccione</mat-option>
+              <mat-option *ngFor="let product of products" [value]="product.id">
+                {{ product.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Almacén</mat-label>
+            <mat-select formControlName="warehouseId" (openedChange)="loadWarehouses($event)">
+              <mat-option [value]="0">Seleccione</mat-option>
+              <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                {{ warehouse.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="movementType">
+              <mat-option value="IN">Entrada</mat-option>
+              <mat-option value="OUT">Salida</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Cantidad</mat-label>
+            <input matInput type="number" min="1" formControlName="quantity" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Descripción</mat-label>
+            <input matInput formControlName="description" />
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" [disabled]="movementForm.invalid || loading" type="submit">
+            Registrar
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="inventory-movements__card">
+      <mat-card-title>Transferencia</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="transferForm" class="inventory-movements__form" (ngSubmit)="submitTransfer()">
+          <mat-form-field appearance="fill">
+            <mat-label>Producto</mat-label>
+            <mat-select formControlName="productId" (openedChange)="loadProducts($event)">
+              <mat-option [value]="0">Seleccione</mat-option>
+              <mat-option *ngFor="let product of products" [value]="product.id">
+                {{ product.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Almacén origen</mat-label>
+            <mat-select formControlName="sourceWarehouseId" (openedChange)="loadWarehouses($event)">
+              <mat-option [value]="0">Seleccione</mat-option>
+              <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                {{ warehouse.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Almacén destino</mat-label>
+            <mat-select formControlName="targetWarehouseId" (openedChange)="loadWarehouses($event)">
+              <mat-option [value]="0">Seleccione</mat-option>
+              <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+                {{ warehouse.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Cantidad</mat-label>
+            <input matInput type="number" min="1" formControlName="quantity" />
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" [disabled]="transferForm.invalid || loading" type="submit">
+            Transferir
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>

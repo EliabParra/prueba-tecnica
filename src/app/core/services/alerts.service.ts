@@ -39,11 +39,31 @@ export class AlertsService {
     }
   }
 
+  private readonly alertDialogId = 'global-alert'
+  private pendingAlert: Alert | null = null
+
   public showAlert(alert: Alert): void {
+    const existing = this.dialog.getDialogById(this.alertDialogId)
+    if (existing) {
+      this.pendingAlert = alert
+      existing.close()
+      existing.afterClosed().subscribe(() => {
+        if (!this.pendingAlert) return
+        const nextAlert = this.pendingAlert
+        this.pendingAlert = null
+        this.openAlert(nextAlert)
+      })
+      return
+    }
+    this.openAlert(alert)
+  }
+
+  private openAlert(alert: Alert): void {
     this.dialog.open(AlertComponent, {
       data: alert,
       autoFocus: false,
-      panelClass: 'alert-dialog'
+      panelClass: 'alert-dialog',
+      id: this.alertDialogId
     })
     if (alert.type === 'success') {
       const next = [...this.recentActivities.value, alert]

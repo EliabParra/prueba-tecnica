@@ -1,0 +1,81 @@
+<main class="reports main-content">
+  <h1 class="reports__title text-center">Reportes</h1>
+
+  <mat-card class="reports__filters">
+    <mat-card-title>Reporte de inventario</mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="filtersForm" class="reports__form">
+        <mat-form-field appearance="fill">
+          <mat-label>Producto</mat-label>
+          <mat-select formControlName="productId" (openedChange)="loadProducts($event)">
+            <mat-option [value]="0">Seleccione</mat-option>
+            <mat-option *ngFor="let product of products" [value]="product.id">
+              {{ product.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="productId.invalid && productId.touched">El producto es obligatorio</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Almacén</mat-label>
+          <mat-select formControlName="warehouseId" (openedChange)="loadWarehouses($event)">
+            <mat-option [value]="0">Todos</mat-option>
+            <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">
+              {{ warehouse.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="reports__actions">
+          <button mat-raised-button color="primary" type="button" (click)="loadReport(true)" [disabled]="loading || productId.invalid">
+            {{ loading ? 'Cargando...' : 'Actualizar' }}
+          </button>
+          <button mat-stroked-button color="primary" type="button" (click)="downloadExcel()" [disabled]="loading || productId.invalid">
+            Descargar Excel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <table mat-table [dataSource]="dataSource" class="table" *ngIf="!loading" matSort>
+    <ng-container matColumnDef="productCode">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Código</th>
+      <td mat-cell *matCellDef="let row" class="table__td">{{ row.productCode }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="productDescription">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Descripción</th>
+      <td mat-cell *matCellDef="let row" class="table__td">{{ row.productDescription }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="movementNumber">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Movimiento</th>
+      <td mat-cell *matCellDef="let row" class="table__td">{{ row.movementNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="movementType">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Tipo</th>
+      <td mat-cell *matCellDef="let row" class="table__td">{{ row.movementType }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="warehouse">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Almacén</th>
+      <td mat-cell *matCellDef="let row" class="table__td">{{ row.warehouse }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef class="table__th" mat-sort-header>Cantidad</th>
+      <td mat-cell *matCellDef="let row" class="table__td">{{ row.quantity }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr class="table__tr" *ngIf="!dataSource.data.length">
+      <td class="table__td text-center" colspan="6">No hay datos...</td>
+    </tr>
+  </table>
+  <div class="table__paginator" *ngIf="!loading">
+    <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+  </div>
+</main>

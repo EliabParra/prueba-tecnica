@@ -1,0 +1,21 @@
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset class="form__fieldset">
+    <legend class="form__legend">Información de la categoría</legend>
+
+    <mat-form-field appearance="fill" class="form__campo">
+      <mat-label>Nombre</mat-label>
+      <input matInput placeholder="Nombre" [formControl]="name" />
+      <mat-error *ngIf="name.invalid && name.touched">El nombre es obligatorio y válido</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form__campo">
+      <mat-label>Descripción</mat-label>
+      <input matInput placeholder="Descripción" [formControl]="description" />
+    </mat-form-field>
+  </fieldset>
+
+  <div class="form__actions">
+    <button mat-button type="button" (click)="dialogRef.close()">Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="form.invalid" type="submit">Guardar</button>
+  </div>
+</form>
