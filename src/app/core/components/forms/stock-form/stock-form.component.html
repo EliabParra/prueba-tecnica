@@ -14,7 +14,6 @@
         matInput
         [formControl]="product"
         [matAutocomplete]="productInput"
-        (focus)="loadProducts()"
       >
       <mat-autocomplete #productInput="matAutocomplete">
         <mat-option *ngFor="let product of filteredProductsArray" [value]="product">
@@ -38,7 +37,6 @@
         matInput
         [formControl]="warehouse"
         [matAutocomplete]="warehouseInput"
-        (focus)="loadWarehouses()"
       >
       <mat-autocomplete #warehouseInput="matAutocomplete">
         <mat-option *ngFor="let warehouse of filteredWarehousesArray" [value]="warehouse">

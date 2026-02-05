@@ -20,6 +20,7 @@ export class ProductsFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.categoriesService.syncDB().then()
     this.categoriesService.categories$.subscribe(list => {
       this.categories = list
     })

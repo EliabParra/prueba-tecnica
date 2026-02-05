@@ -25,11 +25,15 @@ export class StockFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.productsService.syncDB().then()
     this.productsService.products$.subscribe(list => {
       this.products = list
+      this.product.setValue(this.product.value || '', { emitEvent: true })
     })
+    this.warehousesService.syncDB().then()
     this.warehousesService.warehouses$.subscribe(list => {
       this.warehouses = list
+      this.warehouse.setValue(this.warehouse.value || '', { emitEvent: true })
     })
     this.filteredProducts = this.product.valueChanges.pipe(
       startWith(''),
@@ -66,14 +70,6 @@ export class StockFormComponent implements OnInit {
 
   get quantity(): AbstractControl {
     return this.stocksForm.get('quantity')
-  }
-
-  loadProducts() {
-    this.productsService.syncDB().then()
-  }
-
-  loadWarehouses() {
-    this.warehousesService.syncDB().then()
   }
 
   private _filterProducts(value: string): string[] {

@@ -23,12 +23,13 @@ export class AuthInterceptor implements HttpInterceptor {
     })
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
+        const validationMessage = this.buildValidationMessage(error.error?.errors)
         const serverMessage =
           (typeof error.error === 'string' ? error.error : null)
           || error.error?.body?.message
+          || validationMessage
           || error.error?.message
           || error.error?.title
-          || (Array.isArray(error.error?.errors) ? error.error.errors[0] : null)
         const message = serverMessage || error.message
         this.alertsService.showAlert({
           type: 'error',
@@ -41,5 +42,19 @@ export class AuthInterceptor implements HttpInterceptor {
         return throwError(error)
       })
     )
+  }
+
+  private buildValidationMessage(errors: any): string | null {
+    if (!errors || typeof errors !== 'object') return null
+    const messages: string[] = []
+    Object.keys(errors).forEach(key => {
+      const value = errors[key]
+      if (Array.isArray(value)) {
+        value.filter(Boolean).forEach((msg: string) => messages.push(msg))
+      } else if (typeof value === 'string') {
+        messages.push(value)
+      }
+    })
+    return messages.length ? messages.join('\n') : null
   }
 }
